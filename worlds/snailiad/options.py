@@ -13,7 +13,7 @@ class RandomizationType(Choice):
     default = 1
 
 
-class ProgressiveItems(Toggle):
+class ProgressiveItems(DefaultOnToggle):
     """an on/off switch that toggles the stacking of various items.
     There are three progressive items: Weapon (pea > boom > wave),
     Weapon Mod (rapid > devastator), and Shell (ice > grav > metal)"""
@@ -52,6 +52,14 @@ class MusicShuffle(Choice):
 class SnailsHaveHints(Toggle):
     """Enables the Snail Randomizer"""
     display_name = "Snails Have Hints"
+
+
+class TrapFill(Range):
+    """Number of traps to be placed in the world"""
+    display_name = "Trap Fill"
+    range_start = 0
+    range_end = 25
+    default = 0
 
 
 @dataclass
