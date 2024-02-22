@@ -13,7 +13,7 @@ class RandomizationType(Choice):
     default = 1
 
 
-class ProgressiveItems(Toggle):
+class ProgressiveItems(DefaultOnToggle):
     """an on/off switch that toggles the stacking of various items.
     There are three progressive items: Weapon (pea > boom > wave),
     Weapon Mod (rapid > devastator), and Shell (ice > grav > metal)"""
@@ -28,9 +28,9 @@ class StartWithBroom(Toggle):
     display_name = "Start with Broom"
 
 
-class AreaShuffle(Toggle):
-    """Enables the Area Randomizer"""
-    display_name = "Area Shuffle"
+class OpenAreas(Toggle):
+    """Removes the grey boss doors separating the areas of the game"""
+    display_name = "Open Areas"
 
 
 class HelixLocks(Toggle):
@@ -54,13 +54,27 @@ class SnailsHaveHints(Toggle):
     display_name = "Snails Have Hints"
 
 
+class TrapFill(Range):
+    """Number of traps to be placed in the world"""
+    display_name = "Trap Fill"
+    range_start = 0
+    range_end = 25
+    default = 0
+
+
+class HiddenItems(Toggle):
+    """Changes the item appearance to not have a visual tell for what it is"""
+    display_name = "Hidden Items"
+
 @dataclass
 class SnailiadOptions(PerGameCommonOptions):
-    RandomizationType: RandomizationType
-    ProgressiveItems: ProgressiveItems
-    StartWithBroom: StartWithBroom
-    AreaShuffle: AreaShuffle
-    HelixLocks: HelixLocks
-    MusicShuffle: MusicShuffle
-    SnailsHaveHints: SnailsHaveHints
+    Randomization_Type: RandomizationType
+    Progressive_Items: ProgressiveItems
+    Start_With_Broom: StartWithBroom
+    Open_Areas: OpenAreas
+    Helix_Locks: HelixLocks
+    Music_Shuffle: MusicShuffle
+    Snails_Have_Hints: SnailsHaveHints
+    Trap_Fill: TrapFill
     start_inventory_from_pool: StartInventoryPool
+
