@@ -13,6 +13,18 @@ class RandomizationType(Choice):
     default = 1
 
 
+class CharacterSelect(Choice):
+    """Chose your Adventurer"""
+    display_name = "Character Select"
+    option_snaily = 0
+    option_sluggy = 1
+    option_upside = 2
+    option_leggy = 3
+    option_blobby = 4
+    option_leechy = 5
+    default = 0
+
+
 class ProgressiveItems(DefaultOnToggle):
     """an on/off switch that toggles the stacking of various items.
     There are three progressive items: Weapon (pea > boom > wave),
@@ -69,6 +81,7 @@ class HiddenItems(Toggle):
 @dataclass
 class SnailiadOptions(PerGameCommonOptions):
     Randomization_Type: RandomizationType
+    Character_Select: CharacterSelect
     Progressive_Items: ProgressiveItems
     Start_With_Broom: StartWithBroom
     Open_Areas: OpenAreas
@@ -76,5 +89,5 @@ class SnailiadOptions(PerGameCommonOptions):
     Music_Shuffle: MusicShuffle
     Snails_Have_Hints: SnailsHaveHints
     Trap_Fill: TrapFill
+    Hidden_Items: HiddenItems
     start_inventory_from_pool: StartInventoryPool
-
