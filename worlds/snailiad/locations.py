@@ -1,6 +1,8 @@
 from typing import Dict, Set, NamedTuple
 from itertools import groupby
 
+from options import SnailiadOptions
+
 
 class SnailiadLocationData(NamedTuple):
     region: str
@@ -35,7 +37,6 @@ location_table: Dict[str, SnailiadLocationData] = {
     "Signature Croissants (Boomerang)": SnailiadLocationData("Mare Carelia"),
     "Signature Croissants (Heart)":     SnailiadLocationData("Mare Carelia"),
     # Spiralis Silere
-    "Squared Snelks":                   SnailiadLocationData("Spiralis Silere"),
     "Frost Shrine":                     SnailiadLocationData("Spiralis Silere"),
     "Sweater Required":                 SnailiadLocationData("Spiralis Silere"),
     "Devil\'s Alcove":                  SnailiadLocationData("Spiralis Silere"),
@@ -46,8 +47,6 @@ location_table: Dict[str, SnailiadLocationData] = {
     "Prismatic Prize":                  SnailiadLocationData("Spiralis Silere"),
     # Amastrida Abyssus
     "Hall of Fire":                     SnailiadLocationData("Amastrida Abyssus"),
-    "Scorching Snelks":                 SnailiadLocationData("Amastrida Abyssus"),
-    "Hidden Hideout":                   SnailiadLocationData("Amastrida Abyssus"),
     "Green Cache":                      SnailiadLocationData("Amastrida Abyssus"),
     "Furnace":                          SnailiadLocationData("Amastrida Abyssus"),
     "Slytherine Grove":                 SnailiadLocationData("Amastrida Abyssus"),
@@ -70,6 +69,14 @@ location_table: Dict[str, SnailiadLocationData] = {
     # Shrine of Iris
     "Glitched Goodies":                 SnailiadLocationData("Shrine of Iris"),
 }
+
+if SnailiadOptions.Randomization_Type.value == 2:
+    location_table.update({
+        "Squared Snelks":               SnailiadLocationData("Spiralis Silere"),
+        "Scorching Snelks":             SnailiadLocationData("Amastrida Abyssus"),
+        "Hidden Hideout":               SnailiadLocationData("Amastrida Abyssus")
+    })
+
 
 location_name_to_id: Dict[str, int] = {name: location_based_id + index for index, name in enumerate(location_table)}
 

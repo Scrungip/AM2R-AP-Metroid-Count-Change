@@ -13,6 +13,15 @@ class RandomizationType(Choice):
     default = 1
 
 
+class DifficultySelect(Choice):
+    """Changes the ingame difficulty."""
+    display_name = "Difficulty"
+    option_easy = 0
+    option_normal = 1
+    option_insane = 2
+    default = 1
+
+
 class CharacterSelect(Choice):
     """Chose your Adventurer"""
     display_name = "Character Select"
@@ -78,9 +87,11 @@ class HiddenItems(Toggle):
     """Changes the item appearance to not have a visual tell for what it is"""
     display_name = "Hidden Items"
 
+
 @dataclass
 class SnailiadOptions(PerGameCommonOptions):
     Randomization_Type: RandomizationType
+    Difficulty_Select: DifficultySelect
     Character_Select: CharacterSelect
     Progressive_Items: ProgressiveItems
     Start_With_Broom: StartWithBroom

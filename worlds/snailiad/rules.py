@@ -105,15 +105,24 @@ def has_devastator(state: CollectionState, player: int) -> bool:
 
 
 def has_ice_shell(state: CollectionState, player: int) -> bool:
-    return state.has("Ice Snail", player) or state.has("Progressive Shell", player, 1)
+    if SnailiadWorld.options.Difficulty_Select == 2:
+        return True
+    else:
+        return state.has("Ice Snail", player) or state.has("Progressive Shell", player, 1)
 
 
 def has_gravity_shell(state: CollectionState, player: int) -> bool:
-    return state.has("Gravity Shell", player) or state.has("Progressive Shell", player, 2) or state.has("Magnetic Foot", player) or state.has("Corkscrew Jump", player) or state.has("Angel Hop", player)
+    if SnailiadWorld.options.Difficulty_Select == 2:
+        return state.has("Gravity Shell", player) or state.has("Progressive Shell", player, 1) or state.has("Magnetic Foot", player) or state.has("Corkscrew Jump", player) or state.has("Angel Hop", player)
+    else:
+        return state.has("Gravity Shell", player) or state.has("Progressive Shell", player, 2) or state.has("Magnetic Foot", player) or state.has("Corkscrew Jump", player) or state.has("Angel Hop", player)
 
 
 def has_metal_shell(state: CollectionState, player: int) -> bool:
-    return state.has("Full Metal Snail", player) or state.has("Progressive Shell", player, 3)
+    if SnailiadWorld.options.Difficulty_Select == 2:
+        return state.has("Full Metal Snail", player) or state.has("Progressive Shell", player, 2)
+    else:
+        return state.has("Full Metal Snail", player) or state.has("Progressive Shell", player, 3)
 
 
 def can_gravity_shock(state: CollectionState, player: int) -> bool:
@@ -154,7 +163,7 @@ def has_secret_knowledge(options: SnailiadOptions) -> bool:
     return False
 
 
-def set_region_rules(world: "SnailiadWorld") -> None:
+def create_region_rules(world: "SnailiadWorld") -> None:
     multiworld = world.multiworld
     player = world.player
     options = world.options
