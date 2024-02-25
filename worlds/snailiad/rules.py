@@ -154,7 +154,37 @@ def has_secret_knowledge(options: SnailiadOptions) -> bool:
     return False
 
 
-def create_location_rules(world: "SnailiadWorld", ability_unlocks: Dict[str, int]) -> None:
+def set_region_rules(world: "SnailiadWorld") -> None:
+    multiworld = world.multiworld
+    player = world.player
+    options = world.options
+
+    multiworld.get_entrance("Snail Town -> Mare Carelia", player).can_reach = \
+        lambda state: True
+
+    multiworld.get_entrance("Snail Town -> Spiralis Silere", player).can_reach = \
+        lambda state: level_2_breakables(state, player)
+
+    multiworld.get_entrance("Snail Town -> Amastrida Abyssus", player).can_reach = \
+        lambda state: red_door(state, player)
+
+    multiworld.get_entrance("Snail Town -> Lux Lirata", player).can_reach = \
+        lambda state: boss_3(options, state, player) and has_gravity_shell(state, player)
+
+    multiworld.get_entrance("Snail Town -> Shrine of Iris", player).can_reach = \
+        lambda state: level_1_breakables(state, player)
+
+    multiworld.get_entrance("Mare Carelia -> Spiralis Silere", player).can_reach = \
+        lambda state: level_1_breakables(state, player)
+
+    multiworld.get_entrance("Spiralis Silere -> Amastrida Abyssus", player).can_reach = \
+        lambda state: boss_2(options, state, player) and red_door(state, player)
+
+    multiworld.get_entrance("Amastrida Abyssus -> Lux Lirata", player).can_reach = \
+        lambda state: boss_3(options, state, player)
+
+
+def create_location_rules(world: "SnailiadWorld") -> None:
     multiworld = world.multiworld
     player = world.player
     options = world.options
