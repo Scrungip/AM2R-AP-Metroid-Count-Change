@@ -154,7 +154,7 @@ def has_secret_knowledge(options: SnailiadOptions) -> bool:
     return False
 
 
-def set_region_rules(world: "SnailiadWorld") -> None:
+def create_region_rules(world: "SnailiadWorld") -> None:
     multiworld = world.multiworld
     player = world.player
     options = world.options

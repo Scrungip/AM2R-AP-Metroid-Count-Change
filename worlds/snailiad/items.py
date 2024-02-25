@@ -17,6 +17,7 @@ item_table: Dict[str, SnailiadItemData] = {
     "Boomerang": SnailiadItemData(ItemClassification.progression, 1, 0, "Weapon"),
     "Super Secret Boomerang": SnailiadItemData(ItemClassification.progression, 1, 0, "Weapon"),
     "Rainbow Wave": SnailiadItemData(ItemClassification.progression, 1, 0, "Weapon"),
+    "Dev Rainbow Wave": SnailiadItemData(ItemClassification.progression, 1, 0, "Weapon"),
     "Progressive Weapon": SnailiadItemData(ItemClassification.progression, 3, 0, "Weapon"),
     "Rapid Fire": SnailiadItemData(ItemClassification.progression, 1, 0, "Modifier"),
     "Devastator": SnailiadItemData(ItemClassification.progression, 1, 0, "Modifier"),
@@ -31,7 +32,7 @@ item_table: Dict[str, SnailiadItemData] = {
     "Gravity Shock": SnailiadItemData(ItemClassification.progression, 1, 0, "Ability"),
     "High Jump": SnailiadItemData(ItemClassification.progression, 1, 0, "Ability"),
     "Shell Shield": SnailiadItemData(ItemClassification.progression, 1, 0, "Ability"),  # todo do not fill when Sluggy ot leechy
-    "Helix Fragment": SnailiadItemData(ItemClassification.progression, 30, 0),
+    "Helix Fragment": SnailiadItemData(ItemClassification.filler, 30, 0),
     "Nothing": SnailiadItemData(ItemClassification.filler, 0, 0),
     "Heart Container": SnailiadItemData(ItemClassification.progression, 11, 0),  # todo correct number
     "Gravity Lock": SnailiadItemData(ItemClassification.trap, 0, 0, "Trap"),
