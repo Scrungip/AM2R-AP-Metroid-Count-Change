@@ -41,6 +41,7 @@ item_table: Dict[str, SnailiadItemData] = {
     "Gravity Lock": SnailiadItemData(ItemClassification.trap, 0, 0, "Trap"),
     "Weapon Lock": SnailiadItemData(ItemClassification.trap, 0, 0, "Trap"),
     "Lullaby Trap": SnailiadItemData(ItemClassification.trap, 0, 0, "Trap"),
+    "Spider Trap": SnailiadItemData(ItemClassification.trap, 0, 0, "Trap"),
 }
 
 item_name_to_id: Dict[str, int] = {name: item_base_id + data.item_id_offset for name, data in item_table.items()}

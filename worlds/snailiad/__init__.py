@@ -25,7 +25,7 @@ class SnailiadWeb(WebWorld):
     game = "Snailiad"
 
 
-class SnaliladItem(Item):
+class SnaliadItem(Item):
     game: str = "Snailiad"
 
 
@@ -55,27 +55,25 @@ class SnailiadWorld(World):
                 self.options.Progressive_Items.value = passthrough["Progressive_Items"]
                 self.options.Randomization_Type.value = passthrough["Randomization_Type"]
 
-    def create_item(self, name: str) -> SnaliladItem:
+    def create_item(self, name: str) -> SnaliadItem:
         item_data = item_table[name]
-        return SnaliladItem(name, item_data.classification, self.item_name_to_id[name], self.player)
+        return SnaliadItem(name, item_data.classification, self.item_name_to_id[name], self.player)
 
     def create_items(self) -> None:
         character = self.options.Character_Select
         progressive = self.options.Progressive_Items
         helix_locks = self.options.Helix_Locks
         difficulty = self.options.Difficulty_Select
-        nothings = 2
+        nothings = 2  # SSB and DRW will never be generated
 
-        snaliad_items: List[SnaliladItem] = []
+        snaliad_items: List[SnaliadItem] = []
 
         items_to_create: Dict[str, int] = {item: data.quantity_in_item_pool for item, data in item_table.items()}
 
         if progressive:
             items_to_create["Pea Shooter"] = 0
             items_to_create["Boomerang"] = 0
-            items_to_create["Super Secret Boomerang"] = 0
             items_to_create["Rainbow Wave"] = 0
-            items_to_create["Dev Rainbow Wave"] = 0
             items_to_create["Rapid Fire"] = 0
             items_to_create["Devastator"] = 0
             items_to_create["Ice Snail"] = 0
@@ -119,7 +117,7 @@ class SnailiadWorld(World):
 
         if helix_locks:
             pieces = 0
-            fragments = SnaliladItem("Helix Fragment", ItemClassification.progression, self.item_name_to_id["Helix Fragment"], self.player)
+            fragments = SnaliadItem("Helix Fragment", ItemClassification.progression, self.item_name_to_id["Helix Fragment"], self.player)
             while pieces < 20:
                 snaliad_items.append(fragments)
                 pieces += 1
