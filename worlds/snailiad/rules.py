@@ -75,7 +75,7 @@ def is_leechy(options: SnailiadOptions) -> bool:
 
 
 def has_high_jump(state: CollectionState, player: int) -> bool:
-    return state.has("High Jump", player) or can_fly(state, player)
+    return state.has("High Jump", player) or state.has("Wall Grab", player) or can_fly(state, player)
 
 
 def can_fly(state: CollectionState, player: int) -> bool:
@@ -199,7 +199,7 @@ def create_location_rules(world: "SnailiadWorld") -> None:
     options = world.options
 
     set_rule(multiworld.get_location("Original Testing Room", player),
-             lambda state: level_2_breakables(state, player) and (has_high_jump(state, player) or is_upside(options) or is_leggy(options)))
+             lambda state: has_secret_knowledge(options) and level_2_breakables(state, player) and (has_high_jump(state, player) or is_upside(options) or is_leggy(options)))
 
     set_rule(multiworld.get_location("Leggy Snail\'s Tunnel", player),
              lambda state: level_1_breakables(state, player))
@@ -295,7 +295,10 @@ def create_location_rules(world: "SnailiadWorld") -> None:
     set_rule(multiworld.get_location("Sneaky, Sneaky", player),
              lambda state: red_door(state, player))
 
-    set_rule(multiworld.get_location("Prismatic Prize", player),
+    set_rule(multiworld.get_location("Prismatic Prize (Heart)", player),
+             lambda state: red_door(state, player))
+
+    set_rule(multiworld.get_location("Prismatic Prize (Rainbow Wave)", player),
              lambda state: boss_2(options, state, player) or red_door(state, player))
 
     set_rule(multiworld.get_location("Hall of Fire", player),  # todo how much health?
@@ -335,7 +338,7 @@ def create_location_rules(world: "SnailiadWorld") -> None:
              lambda state: level_2_breakables(state, player))
 
     set_rule(multiworld.get_location("Fast Food", player),
-             lambda state: can_fly(state, player) or has_secret_knowledge(options))
+             lambda state: can_fly(state, player) or (has_secret_knowledge(options) and red_door(state, player)))
 
     set_rule(multiworld.get_location("The Bridge", player),
              lambda state: boss_3(options, state, player) or (red_door(state, player) and (has_high_jump(state, player)

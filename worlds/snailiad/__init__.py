@@ -110,6 +110,7 @@ class SnailiadWorld(World):
         if character == character.option_blobby:
             items_to_create["Gravity Shell"] = 0
             items_to_create["Angel Hop"] = 1
+            items_to_create["Wall Grab"] = 1
 
         if character == character.option_leechy:
             items_to_create["Shell Shield"] = 0

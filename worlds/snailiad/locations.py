@@ -12,7 +12,6 @@ class SnailiadLocationData(NamedTuple):
 location_based_id = 1000000000000  # todo actual base ID
 
 location_table: Dict[str, SnailiadLocationData] = {
-    "Original Testing Room":            SnailiadLocationData("Snail Town"),
     "Leggy Snail\'s Tunnel":            SnailiadLocationData("Snail Town"),
     "Town Overtunnel":                  SnailiadLocationData("Snail Town"),
     "Super Secret Alcove":              SnailiadLocationData("Snail Town"),
@@ -44,7 +43,8 @@ location_table: Dict[str, SnailiadLocationData] = {
     "The Labyrinth (Fragment)":         SnailiadLocationData("Spiralis Silere"),
     "The Labyrinth (High Jump)":        SnailiadLocationData("Spiralis Silere"),
     "Sneaky Sneaky":                    SnailiadLocationData("Spiralis Silere"),
-    "Prismatic Prize":                  SnailiadLocationData("Spiralis Silere"),
+    "Prismatic Prize (Rainbow Wave)":   SnailiadLocationData("Spiralis Silere"),
+    "Prismatic Prize (Heart)":          SnailiadLocationData("Spiralis Silere"),
     # Amastrida Abyssus
     "Hall of Fire":                     SnailiadLocationData("Amastrida Abyssus"),
     "Green Cache":                      SnailiadLocationData("Amastrida Abyssus"),
@@ -72,6 +72,7 @@ location_table: Dict[str, SnailiadLocationData] = {
 
 if SnailiadOptions.Randomization_Type.value == 2:
     location_table.update({
+        "Original Testing Room":        SnailiadLocationData("Snail Town"),
         "Squared Snelks":               SnailiadLocationData("Spiralis Silere"),
         "Scorching Snelks":             SnailiadLocationData("Amastrida Abyssus"),
         "Hidden Hideout":               SnailiadLocationData("Amastrida Abyssus")
