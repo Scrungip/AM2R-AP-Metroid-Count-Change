@@ -279,6 +279,9 @@ def create_location_rules(world: "SnailiadWorld") -> None:
     set_rule(multiworld.get_location("Sweater Required", player),
              lambda state: level_1_breakables(state, player) and has_ice_shell(state, player))
 
+    set_rule(multiworld.get_location("A Secret to Snowbody", player),
+             lambda state: pink_door(state, player))
+
     set_rule(multiworld.get_location("Devil\'s Alcove", player),
              lambda state: green_door(state, player))
 

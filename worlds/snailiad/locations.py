@@ -38,6 +38,7 @@ location_table: Dict[str, SnailiadLocationData] = {
     # Spiralis Silere
     "Frost Shrine":                     SnailiadLocationData("Spiralis Silere"),
     "Sweater Required":                 SnailiadLocationData("Spiralis Silere"),
+    "A Secret to Snowbody":             SnailiadLocationData("Spiralis Silere"),
     "Devil\'s Alcove":                  SnailiadLocationData("Spiralis Silere"),
     "Ice Climb":                        SnailiadLocationData("Spiralis Silere"),
     "The Labyrinth (Fragment)":         SnailiadLocationData("Spiralis Silere"),
