@@ -235,7 +235,7 @@ def create_location_rules(world: "SnailiadWorld") -> None:
              lambda state: level_2_breakables(state, player))
 
     set_rule(multiworld.get_location("Discombobulatory Alcove", player),
-             lambda state: True)
+             lambda state: has_secret_knowledge(options) or can_fly(state, player) or is_upside(options) or is_leggy(options))
 
     set_rule(multiworld.get_location("Seabed Caves", player),
              lambda state: True)
@@ -256,7 +256,7 @@ def create_location_rules(world: "SnailiadWorld") -> None:
              lambda state: red_door(state, player))
 
     set_rule(multiworld.get_location("Daily Helping of Calcium", player),
-             lambda state: pink_door(state, player) or has_secret_knowledge(options))
+             lambda state: pink_door(state, player) or (has_secret_knowledge(options) and blue_door(state, player)))
 
     set_rule(multiworld.get_location("Dig, Snaily, Dig", player),
              lambda state: green_door(state, player))
