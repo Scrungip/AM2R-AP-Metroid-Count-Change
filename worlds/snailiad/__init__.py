@@ -124,3 +124,61 @@ class SnailiadWorld(World):
                 pieces += 1
 
             items_to_create["Helix Fragment"] = 10
+
+        for item, quantity in items_to_create.items():
+            for i in range(0, quantity):
+                snaliad_item: SnaliadItem = self.create_item(item)
+                snaliad_items.append(snaliad_item)
+
+        self.multiworld.itempool += snaliad_items
+
+    def create_regions(self) -> None:
+        for region_name in snailiad_regions:
+            region = Region(region_name, self.player, self.multiworld)
+            self.multiworld.regions.append(region)
+
+        for region_name, exits in snailiad_regions.items():
+            region = self.multiworld.get_region(region_name, self.player)
+            region.add_exits(exits)
+
+        for location_name, location_id in self.location_name_to_id.items():
+            region = self.multiworld.get_region(location_table[location_name].region, self.player)
+            location = SnailiadLocation(self.player, location_name, location_id, region)
+            region.locations.append(location)
+
+        victory_region = self.multiworld.get_region("Victory", self.player)  # todo correct region name
+        victory_location = SnailiadLocation(self.player, "Victory", None, victory_region)
+        victory_location.place_locked_item(SnaliadItem("Victory", ItemClassification.progression, None, self.player))
+        self.multiworld.completion_condition[self.player] = lambda state: state.has("Victory", self.player)
+        victory_region.locations.append(victory_location)
+
+    def set_rules(self) -> None:
+        create_region_rules(self)
+        create_location_rules(self)
+
+    def get_filler_item_name(self) -> str:
+        return self.random.choice(filler_items)
+
+    def fill_slot_data(self) -> Dict[str, Any]:
+        slot_data: Dict[str, Any] = {
+            "seed": self.random.randint(0, 2147483647),
+            "Randomization_Type": self.options.Randomization_Type.value,
+            "Difficulty_Select": self.options.Difficulty_Select.value,
+            "Character_Select": self.options.Character_Select.value,
+            "Progressive_Items": self.options.Progressive_Items.value,
+            "Start_With_Broom": self.options.Start_With_Broom.value,
+            "Open_Areas": self.options.Open_Areas.value,
+            "Helix_Locks": self.options.Helix_Locks.value,
+            "Music_Shuffle": self.options.Music_Shuffle.value,
+            "Snails_Have_Hints": self.options.Snails_Have_Hints.value,
+            "Trap_Fill": self.options.Trap_Fill.value,
+            "Hidden_Items": self.options.Hidden_Items.value
+        }
+
+        for snailiad_item in filter(lambda item: item.location is not None and item.code is not None, self.slot_data_items):
+            if snailiad_item.name not in slot_data:
+                slot_data[snailiad_item.name] = []
+                slot_data[snailiad_item.name].append([snailiad_item.location.name, snailiad_item.location.player])
+
+            for start_item in self.options.start_inventory_from_pool:
+                if start_item in slot_data_item_names:
