@@ -1,8 +1,6 @@
 from typing import Dict, Set, NamedTuple
 from itertools import groupby
 
-from .options import SnailiadOptions
-
 
 class SnailiadLocationData(NamedTuple):
     region: str
@@ -70,15 +68,12 @@ location_table: Dict[str, SnailiadLocationData] = {
     "Reinforcements":                   SnailiadLocationData("Lux Lirata"),
     # Shrine of Iris
     "Glitched Goodies":                 SnailiadLocationData("Shrine of Iris"),
+    # Knowledge locations
+    "Original Testing Room":        SnailiadLocationData("Snail Town"),
+    "Squared Snelks":               SnailiadLocationData("Spiralis Silere"),
+    "Scorching Snelks":             SnailiadLocationData("Amastrida Abyssus"),
+    "Hidden Hideout":               SnailiadLocationData("Amastrida Abyssus")
 }
-
-if SnailiadOptions == 2:
-    location_table.update({
-        "Original Testing Room":        SnailiadLocationData("Snail Town"),
-        "Squared Snelks":               SnailiadLocationData("Spiralis Silere"),
-        "Scorching Snelks":             SnailiadLocationData("Amastrida Abyssus"),
-        "Hidden Hideout":               SnailiadLocationData("Amastrida Abyssus")
-    })
 
 
 location_name_to_id: Dict[str, int] = {name: location_based_id + index for index, name in enumerate(location_table)}

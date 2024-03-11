@@ -1,9 +1,10 @@
 from typing import Dict, List, Any
 
 from BaseClasses import Region, Location, Item, Tutorial, ItemClassification
+from worlds.generic.Rules import set_rule
 from .items import item_name_to_id, item_table, filler_items, item_name_group, slot_data_item_names
 from .locations import location_table, location_name_group, location_name_to_id
-from .rules import create_region_rules, create_location_rules
+from .rules import create_region_rules, create_location_rules, blue_door, green_door, red_door, pink_door
 from .regions import snailiad_regions
 from .options import SnailiadOptions
 from worlds.AutoWorld import WebWorld, World
@@ -157,15 +158,46 @@ class SnailiadWorld(World):
             location = SnailiadLocation(self.player, location_name, location_id, region)
             region.locations.append(location)
 
-        victory_region = self.multiworld.get_region("Shrine of Iris", self.player)
-        victory_location = SnailiadLocation(self.player, "Victory", None, victory_region)
-        victory_location.place_locked_item(SnaliadItem("Victory", ItemClassification.progression, None, self.player))
-        self.multiworld.completion_condition[self.player] = lambda state: state.has("Victory", self.player)
-        victory_region.locations.append(victory_location)
+        boss_1_region = self.multiworld.get_region("Mare Carelia", self.player)
+        boss_1_location = SnailiadLocation(self.player, "Shell Breaker", None, boss_1_region)
+
+        boss_1_location.place_locked_item(SnaliadItem("Boss 1", ItemClassification.progression, None, self.player))
+        boss_1_region.locations.append(boss_1_location)
+
+        boss_2_region = self.multiworld.get_region("Spiralis Silere", self.player)
+        boss_2_location = SnailiadLocation(self.player, "Stompy", None, boss_2_region)
+        boss_2_location.place_locked_item(SnaliadItem("Boss 2", ItemClassification.progression, None, self.player))
+        boss_2_region.locations.append(boss_2_location)
+
+        boss_3_region = self.multiworld.get_region("Amastrida Abyssus", self.player)
+        boss_3_location = SnailiadLocation(self.player, "Space Box", None, boss_3_region)
+        boss_3_location.place_locked_item(SnaliadItem("Boss 3", ItemClassification.progression, None, self.player))
+        boss_3_region.locations.append(boss_3_location)
+
+        boss_4_region = self.multiworld.get_region("Lux Lirata", self.player)
+        boss_4_location = SnailiadLocation(self.player, "Moon Snail", None, boss_4_region)
+        boss_4_location.place_locked_item(SnaliadItem("Boss 4", ItemClassification.progression, None, self.player))
+        boss_4_region.locations.append(boss_4_location)
+
+        helix_region = self.multiworld.get_region("Shrine of Iris", self.player)
+        helix_location = SnailiadLocation(self.player, "Helix Fragment Cutscene", None, helix_region)
+        helix_location.place_locked_item(SnaliadItem("All Helix\'s", ItemClassification.progression, None, self.player))
+        helix_region.locations.append(helix_location)
+
+        self.multiworld.completion_condition[self.player] = lambda state: state.has("Boss 4", self.player)
 
     def set_rules(self) -> None:
         create_region_rules(self)
         create_location_rules(self)
+        # Boss event location requirements
+        set_rule(self.multiworld.get_location("Shell Breaker", self.player),
+                 lambda state: blue_door(state, self.player, self))
+        set_rule(self.multiworld.get_location("Space Box", self.player),
+                 lambda state: pink_door(state, self.player, self))
+        set_rule(self.multiworld.get_location("Space Box", self.player),
+                 lambda state: red_door(state, self.player, self))
+        set_rule(self.multiworld.get_location("Space Box", self.player),
+                 lambda state: green_door(state, self.player, self))
 
     def get_filler_item_name(self) -> str:
         return self.random.choice(filler_items)

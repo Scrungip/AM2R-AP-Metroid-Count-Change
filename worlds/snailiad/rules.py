@@ -147,11 +147,11 @@ def green_door(state: CollectionState, player: int, world: "SnailiadWorld") -> b
 
 
 def level_1_breakables(state: CollectionState, player: int, world: "SnailiadWorld") -> bool:
-    return has_boomerang(state, player) or (has_weapon(state, player, world) and has_devastator(state, player))
+    return has_boomerang(state, player) or level_2_breakables(state, player, world)
 
 
 def level_2_breakables(state: CollectionState, player: int, world: "SnailiadWorld") -> bool:
-    return has_rainbow_wave(state, player) or (has_weapon(state, player, world) and has_devastator(state, player))
+    return has_rainbow_wave(state, player) or level_3_breakables(state, player, world)
 
 
 def level_3_breakables(state: CollectionState, player: int, world: "SnailiadWorld") -> bool:
@@ -199,9 +199,9 @@ def create_location_rules(world: "SnailiadWorld") -> None:
     player = world.player
     options = world.options
 
-    # set_rule(multiworld.get_location("Original Testing Room", player),
-    #          lambda state: has_secret_knowledge(options) and level_2_breakables(state, player, world) and
-    #          (has_high_jump(state, player, world) or is_upside(options) or is_leggy(options)))
+    set_rule(multiworld.get_location("Original Testing Room", player),
+             lambda state: has_secret_knowledge(options) and level_2_breakables(state, player, world) and
+             (has_high_jump(state, player, world) or is_upside(options) or is_leggy(options)))
 
     set_rule(multiworld.get_location("Leggy Snail\'s Tunnel", player),
              lambda state: level_1_breakables(state, player, world))
@@ -272,8 +272,8 @@ def create_location_rules(world: "SnailiadWorld") -> None:
     set_rule(multiworld.get_location("Signature Croissants (Heart)", player),
              lambda state: boss_1(options, state, player) and level_1_breakables(state, player, world))
 
-    # set_rule(multiworld.get_location("Squared Snelks", player),
-    #          lambda state: has_secret_knowledge(options) and (can_fly(state, player, world) or is_upside(options) or is_leggy(options)))
+    set_rule(multiworld.get_location("Squared Snelks", player),
+             lambda state: has_secret_knowledge(options) and (can_fly(state, player, world) or is_upside(options) or is_leggy(options)))
 
     set_rule(multiworld.get_location("Frost Shrine", player),
              lambda state: level_2_breakables(state, player, world))
@@ -311,12 +311,12 @@ def create_location_rules(world: "SnailiadWorld") -> None:
              lambda state: (has_metal_shell(state, player, world) or state.has("Heart Container", player))
              and (pink_door(state, player, world) or red_door(state, player, world)))
 
-    # set_rule(multiworld.get_location("Scorching Snelks", player),
-    #          lambda state: has_secret_knowledge(options) and has_metal_shell(state, player, world) and (can_fly(state, player, world)
-    #          or level_3_breakables(state, player, world) or red_door(state, player, world)))
+    set_rule(multiworld.get_location("Scorching Snelks", player),
+             lambda state: has_secret_knowledge(options) and has_metal_shell(state, player, world) and (can_fly(state, player, world)
+             or level_3_breakables(state, player, world) or red_door(state, player, world)))
 
-    # set_rule(multiworld.get_location("Hidden Hideout", player),
-    #          lambda state: has_secret_knowledge(options) and (can_fly(state, player, world) or level_3_breakables(state, player, world)))
+    set_rule(multiworld.get_location("Hidden Hideout", player),
+             lambda state: has_secret_knowledge(options) and (can_fly(state, player, world) or level_3_breakables(state, player, world)))
 
     set_rule(multiworld.get_location("Green Cache", player),
              lambda state: red_door(state, player, world) or level_3_breakables(state, player, world))
