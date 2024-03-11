@@ -4,7 +4,8 @@ from BaseClasses import Region, Location, Item, Tutorial, ItemClassification
 from worlds.generic.Rules import set_rule
 from .items import item_name_to_id, item_table, filler_items, item_name_group, slot_data_item_names
 from .locations import location_table, location_name_group, location_name_to_id
-from .rules import create_region_rules, create_location_rules, blue_door, green_door, red_door, pink_door
+from .rules import create_region_rules, create_location_rules, blue_door, green_door, red_door, pink_door, \
+    has_devastator
 from .regions import snailiad_regions
 from .options import SnailiadOptions
 from worlds.AutoWorld import WebWorld, World
@@ -68,6 +69,7 @@ class SnailiadWorld(World):
         progressive = self.options.Progressive_Items
         helix_locks = self.options.Helix_Locks
         difficulty = self.options.Difficulty_Select
+        traps = self.options.Trap_Fill
 
         nothings = 2  # SSB and DRW will never be generated
 
@@ -137,6 +139,8 @@ class SnailiadWorld(World):
 
 
 
+
+
         for item, quantity in items_to_create.items():
             for i in range(0, quantity):
                 snaliad_item: SnaliadItem = self.create_item(item)
@@ -197,7 +201,7 @@ class SnailiadWorld(World):
         set_rule(self.multiworld.get_location("Space Box", self.player),
                  lambda state: red_door(state, self.player, self))
         set_rule(self.multiworld.get_location("Space Box", self.player),
-                 lambda state: green_door(state, self.player, self))
+                 lambda state: green_door(state, self.player, self) and has_devastator(state, self.player))
 
     def get_filler_item_name(self) -> str:
         return self.random.choice(filler_items)
@@ -223,7 +227,7 @@ class SnailiadWorld(World):
                 if start_item not in slot_data:
                     slot_data[start_item] = []
                 for i in range(0, self.options.start_inventory_from_pool[start_item]):
-                    slot_data[start_item].extend(["Your Shell", self.player])
+                    slot_data[start_item].extend(["Your Shell(?)", self.player])
 
         for plando_item in self.multiworld.plando_items[self.player]:
             if plando_item["from_pool"]:
