@@ -1,7 +1,7 @@
 from typing import Dict, Set, NamedTuple
 from itertools import groupby
 
-from options import SnailiadOptions
+from .options import SnailiadOptions
 
 
 class SnailiadLocationData(NamedTuple):
@@ -9,13 +9,13 @@ class SnailiadLocationData(NamedTuple):
     location_group: str = "region"
 
 
-location_based_id = 1000000000000  # todo actual base ID
+location_based_id = 28000000  # todo actual base ID
 
 location_table: Dict[str, SnailiadLocationData] = {
     "Leggy Snail\'s Tunnel":            SnailiadLocationData("Snail Town"),
     "Town Overtunnel":                  SnailiadLocationData("Snail Town"),
     "Super Secret Alcove":              SnailiadLocationData("Snail Town"),
-    "Love Snail\'s Tunnel":             SnailiadLocationData("Snail Town"),
+    "Love Snail\'s Alcove":             SnailiadLocationData("Snail Town"),
     "Suspicious Tree":                  SnailiadLocationData("Snail Town"),
     "Anger Management Room":            SnailiadLocationData("Snail Town"),
     "Percentage Snail\'s Hidey Hole":   SnailiadLocationData("Snail Town"),
@@ -31,7 +31,7 @@ location_table: Dict[str, SnailiadLocationData] = {
     "Monument of Greatness":            SnailiadLocationData("Mare Carelia"),
     "Heart of the Sea":                 SnailiadLocationData("Mare Carelia"),
     "Daily Helping of Calcium":         SnailiadLocationData("Mare Carelia"),
-    "Dig Snaily Dig":                   SnailiadLocationData("Mare Carelia"),
+    "Dig, Snaily, Dig":                 SnailiadLocationData("Mare Carelia"),
     "Skywatcher\'s Loot":               SnailiadLocationData("Mare Carelia"),
     "Signature Croissants (Boomerang)": SnailiadLocationData("Mare Carelia"),
     "Signature Croissants (Heart)":     SnailiadLocationData("Mare Carelia"),
@@ -43,16 +43,16 @@ location_table: Dict[str, SnailiadLocationData] = {
     "Ice Climb":                        SnailiadLocationData("Spiralis Silere"),
     "The Labyrinth (Fragment)":         SnailiadLocationData("Spiralis Silere"),
     "The Labyrinth (High Jump)":        SnailiadLocationData("Spiralis Silere"),
-    "Sneaky Sneaky":                    SnailiadLocationData("Spiralis Silere"),
+    "Sneaky, Sneaky":                    SnailiadLocationData("Spiralis Silere"),
     "Prismatic Prize (Rainbow Wave)":   SnailiadLocationData("Spiralis Silere"),
     "Prismatic Prize (Heart)":          SnailiadLocationData("Spiralis Silere"),
     # Amastrida Abyssus
     "Hall of Fire":                     SnailiadLocationData("Amastrida Abyssus"),
     "Green Cache":                      SnailiadLocationData("Amastrida Abyssus"),
     "Furnace":                          SnailiadLocationData("Amastrida Abyssus"),
-    "Slytherine Grove":                 SnailiadLocationData("Amastrida Abyssus"),
+    "Slitherine Grove":                 SnailiadLocationData("Amastrida Abyssus"),
     "Floaty Fortress (Top Left)":       SnailiadLocationData("Amastrida Abyssus"),
-    "Floaty Fortress (Top Right)":      SnailiadLocationData("Amastrida Abyssus"),
+    "Floaty Fortress (Bottom Right)":   SnailiadLocationData("Amastrida Abyssus"),
     "Woah Mama":                        SnailiadLocationData("Amastrida Abyssus"),
     "Shocked Shell":                    SnailiadLocationData("Amastrida Abyssus"),
     "Gravity Shrine":                   SnailiadLocationData("Amastrida Abyssus"),
@@ -60,8 +60,9 @@ location_table: Dict[str, SnailiadLocationData] = {
     "The Bridge":                       SnailiadLocationData("Amastrida Abyssus"),
     # lux lirata
     "Transit 90":                       SnailiadLocationData("Lux Lirata"),
+    "Steel Shrine":                     SnailiadLocationData("Lux Lirata"),
     "Space Balcony (Heart)":            SnailiadLocationData("Lux Lirata"),
-    "Space Balcony (Boomerang)":        SnailiadLocationData("Lux Lirata"),
+    "Space Balcony (Fragment)":         SnailiadLocationData("Lux Lirata"),
     "The Vault":                        SnailiadLocationData("Lux Lirata"),
     "Holy Hideaway":                    SnailiadLocationData("Lux Lirata"),
     "Arctic Alcove":                    SnailiadLocationData("Lux Lirata"),
@@ -71,7 +72,7 @@ location_table: Dict[str, SnailiadLocationData] = {
     "Glitched Goodies":                 SnailiadLocationData("Shrine of Iris"),
 }
 
-if SnailiadOptions.Randomization_Type.value == 2:
+if SnailiadOptions == 2:
     location_table.update({
         "Original Testing Room":        SnailiadLocationData("Snail Town"),
         "Squared Snelks":               SnailiadLocationData("Spiralis Silere"),

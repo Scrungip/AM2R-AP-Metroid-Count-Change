@@ -6,5 +6,6 @@ snailiad_regions: Dict[str, Set[str]] = {
     "Mare Carelia": {"Spiralis Silere"},
     "Spiralis Silere": {"Amastrida Abyssus"},
     "Amastrida Abyssus": {"Lux Lirata"},
+    "Lux Lirata": set(),
     "Shrine of Iris": set()
 }

@@ -1,7 +1,7 @@
 from typing import Dict, List, Any
 
 from BaseClasses import Region, Location, Item, Tutorial, ItemClassification
-from .items import item_name_to_id, item_table, filler_items, item_name_group
+from .items import item_name_to_id, item_table, filler_items, item_name_group, slot_data_item_names
 from .locations import location_table, location_name_group, location_name_to_id
 from .rules import create_region_rules, create_location_rules
 from .regions import snailiad_regions
@@ -37,16 +37,19 @@ class SnailiadWorld(World):
     """
     Snail™
     """  # todo Description
-    game = "Snailiad"
+    game = "Snailiad+"
     web = SnailiadWeb()
 
     data_version = 0
     options: SnailiadOptions
+    options_dataclass = SnailiadOptions
     item_name_groups = item_name_group
     location_name_groups = location_name_group
 
     item_name_to_id = item_name_to_id
     location_name_to_id = location_name_to_id
+
+    slot_data_items: List[SnaliadItem]
 
     def generate_early(self) -> None:
         if hasattr(self.multiworld, "re_gen_passthrough"):
@@ -146,7 +149,7 @@ class SnailiadWorld(World):
             location = SnailiadLocation(self.player, location_name, location_id, region)
             region.locations.append(location)
 
-        victory_region = self.multiworld.get_region("Victory", self.player)  # todo correct region name
+        victory_region = self.multiworld.get_region("Shrine of Iris", self.player)  # todo correct region name
         victory_location = SnailiadLocation(self.player, "Victory", None, victory_region)
         victory_location.place_locked_item(SnaliadItem("Victory", ItemClassification.progression, None, self.player))
         self.multiworld.completion_condition[self.player] = lambda state: state.has("Victory", self.player)
@@ -182,3 +185,26 @@ class SnailiadWorld(World):
 
             for start_item in self.options.start_inventory_from_pool:
                 if start_item in slot_data_item_names:
+                    if start_item not in slot_data:
+                        slot_data[start_item] = []
+                    for i in range(0, self.options.start_inventory_from_pool[start_item]):
+                        slot_data[start_item].extend(["Your Shell", self.player])
+
+        for plando_item in self.multiworld.plando_items[self.player]:
+            if plando_item["from_pool"]:
+                items_to_find = set()
+                for item_type in [key for key in ["item", "items"] if key in plando_item]:
+                    for item in plando_item[item_type]:
+                        items_to_find.add(item)
+                for item in items_to_find:
+                    if item in slot_data_item_names:
+                        slot_data[item] = []
+                        for item_location in self.multiworld.find_item_locations(item, self.player):
+                            slot_data[item].extend([item_location.name, item_location.player])
+
+        return slot_data
+
+    @staticmethod  # for universal tracker
+    def interpret_slot_data(slot_data: Dict[str, Any]) -> Dict[str, Any]:
+        # returning slot_data so it regens, giving it back in multiworld.re_gen_passthrough
+        return slot_data
