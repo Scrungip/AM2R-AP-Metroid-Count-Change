@@ -9,7 +9,7 @@ class SnailiadLocationData(NamedTuple):
     location_group: str = "region"
 
 
-location_based_id = 28000000  # todo actual base ID
+location_based_id = 609342400  # todo actual base ID
 
 location_table: Dict[str, SnailiadLocationData] = {
     "Leggy Snail\'s Tunnel":            SnailiadLocationData("Snail Town"),

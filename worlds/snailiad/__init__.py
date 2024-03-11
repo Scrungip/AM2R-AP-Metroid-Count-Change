@@ -67,6 +67,7 @@ class SnailiadWorld(World):
         progressive = self.options.Progressive_Items
         helix_locks = self.options.Helix_Locks
         difficulty = self.options.Difficulty_Select
+
         nothings = 2  # SSB and DRW will never be generated
 
         snaliad_items: List[SnaliadItem] = []
@@ -77,22 +78,20 @@ class SnailiadWorld(World):
             items_to_create["Pea Shooter"] = 0
             items_to_create["Boomerang"] = 0
             items_to_create["Rainbow Wave"] = 0
+            items_to_create["Progressive Weapon"] = 3
+
             items_to_create["Rapid Fire"] = 0
             items_to_create["Devastator"] = 0
+            items_to_create["Progressive Modifier"] = 2
+
             items_to_create["Ice Snail"] = 0
             items_to_create["Gravity Shell"] = 0
-            items_to_create["Magnetic Foot"] = 0
-            items_to_create["Corkscrew Jump"] = 0
-            items_to_create["Angel Hop"] = 0
             items_to_create["Full Metal Snail"] = 0
-            items_to_create["Progressive Weapon"] = 3
-            items_to_create["Progressive Modifier"] = 2
             if difficulty == difficulty.option_insane:
                 items_to_create["Progressive Shell"] = 2
                 nothings += 1
             else:
                 items_to_create["Progressive Shell"] = 3
-            nothings += 2
 
         if difficulty == difficulty.option_insane:
             items_to_create["Ice Snail"] = 0
@@ -113,11 +112,16 @@ class SnailiadWorld(World):
         if character == character.option_blobby:
             items_to_create["Gravity Shell"] = 0
             items_to_create["Angel Hop"] = 1
+
+            items_to_create["High Jump"] = 0
             items_to_create["Wall Grab"] = 1
 
         if character == character.option_leechy:
             items_to_create["Shell Shield"] = 0
             nothings += 1
+
+            items_to_create["Rapid Fire"] = 0
+            items_to_create["Backfire"] = 1
 
         if helix_locks:
             pieces = 0
@@ -127,6 +131,10 @@ class SnailiadWorld(World):
                 pieces += 1
 
             items_to_create["Helix Fragment"] = 10
+
+        items_to_create["Nothing"] = nothings
+
+
 
         for item, quantity in items_to_create.items():
             for i in range(0, quantity):
@@ -149,7 +157,7 @@ class SnailiadWorld(World):
             location = SnailiadLocation(self.player, location_name, location_id, region)
             region.locations.append(location)
 
-        victory_region = self.multiworld.get_region("Shrine of Iris", self.player)  # todo correct region name
+        victory_region = self.multiworld.get_region("Shrine of Iris", self.player)
         victory_location = SnailiadLocation(self.player, "Victory", None, victory_region)
         victory_location.place_locked_item(SnaliadItem("Victory", ItemClassification.progression, None, self.player))
         self.multiworld.completion_condition[self.player] = lambda state: state.has("Victory", self.player)
@@ -178,17 +186,12 @@ class SnailiadWorld(World):
             "Hidden_Items": self.options.Hidden_Items.value
         }
 
-        for snailiad_item in filter(lambda item: item.location is not None and item.code is not None, self.slot_data_items):
-            if snailiad_item.name not in slot_data:
-                slot_data[snailiad_item.name] = []
-                slot_data[snailiad_item.name].append([snailiad_item.location.name, snailiad_item.location.player])
-
-            for start_item in self.options.start_inventory_from_pool:
-                if start_item in slot_data_item_names:
-                    if start_item not in slot_data:
-                        slot_data[start_item] = []
-                    for i in range(0, self.options.start_inventory_from_pool[start_item]):
-                        slot_data[start_item].extend(["Your Shell", self.player])
+        for start_item in self.options.start_inventory_from_pool:
+            if start_item in slot_data_item_names:
+                if start_item not in slot_data:
+                    slot_data[start_item] = []
+                for i in range(0, self.options.start_inventory_from_pool[start_item]):
+                    slot_data[start_item].extend(["Your Shell", self.player])
 
         for plando_item in self.multiworld.plando_items[self.player]:
             if plando_item["from_pool"]:
