@@ -64,15 +64,15 @@ location_table: Dict[str, SnailiadLocationData] = {
     "The Vault":                        SnailiadLocationData("Lux Lirata"),
     "Holy Hideaway":                    SnailiadLocationData("Lux Lirata"),
     "Arctic Alcove":                    SnailiadLocationData("Lux Lirata"),
-    "Lost Loot":                        SnailiadLocationData("Lux Lirata"),
     "Reinforcements":                   SnailiadLocationData("Lux Lirata"),
     # Shrine of Iris
     "Glitched Goodies":                 SnailiadLocationData("Shrine of Iris"),
     # Knowledge locations
-    "Original Testing Room":        SnailiadLocationData("Snail Town"),
-    "Squared Snelks":               SnailiadLocationData("Spiralis Silere"),
-    "Scorching Snelks":             SnailiadLocationData("Amastrida Abyssus"),
-    "Hidden Hideout":               SnailiadLocationData("Amastrida Abyssus")
+    "Original Testing Room":            SnailiadLocationData("Snail Town"),
+    "Squared Snelks":                   SnailiadLocationData("Spiralis Silere"),
+    "Scorching Snelks":                 SnailiadLocationData("Amastrida Abyssus"),
+    "Hidden Hideout":                   SnailiadLocationData("Amastrida Abyssus"),
+    "Lost Loot":                        SnailiadLocationData("Lux Lirata"),
 }
 
 

@@ -130,12 +130,16 @@ class SnailiadWorld(World):
             items_to_create["Rapid Fire"] = 0
             items_to_create["Backfire"] = 1
 
-    # my initial plan to swap the progression status did not work so I swapped to this combo setup
+    # my initial plan to swap the progression status did not work so I swapped to this combo setup from TUNIC and Mssenger for readbility and functionality
         if helix_locks:
+            if self.options.Trap_Fill:
+                total_pieces = 25
+            else:
+                total_pieces = 30
             req_pieces = 25
-            fragments = [self.create_item("Helix Fragment") for _ in range(30)]
+            fragments = [self.create_item("Helix Fragment") for _ in range(total_pieces)]
             for i in range(0, req_pieces):
-                fragments[i].classification = ItemClassification.progression
+                fragments[i].classification = ItemClassification.progression_skip_balancing
             items_to_create["Helix Fragment"] = 0
 
         items_to_create["Nothing"] = nothings

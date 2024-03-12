@@ -11,7 +11,7 @@ class SnailiadItemData(NamedTuple):
     item_group: str = ""
 
 
-item_base_id = 609342400  # todo actual base ID
+item_base_id = 609342400
 
 item_table: Dict[str, SnailiadItemData] = {
     "Pea Shooter": SnailiadItemData(ItemClassification.progression, 1, 0, 0, "Weapon"),  # todo Progression or Not
@@ -58,7 +58,6 @@ filler_items: List[str] = [name for name, data in item_table.items() if data.cla
 
 
 def get_item_group(item_name: str) -> str:
-
     return item_table[item_name].item_group
 
 
