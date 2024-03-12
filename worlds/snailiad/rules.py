@@ -74,6 +74,10 @@ def is_leechy(options: SnailiadOptions) -> bool:
         return False
 
 
+def has_health(state: CollectionState, player: int) -> bool:
+    return state.has("Heart Container", player, 4)
+
+
 def has_high_jump(state: CollectionState, player: int, world: "SnailiadWorld") -> bool:
     return state.has("High Jump", player) or state.has("Wall Grab", player) or can_fly(state, player, world)
 
@@ -280,7 +284,7 @@ def create_location_rules(world: "SnailiadWorld") -> None:
 
     set_rule(multiworld.get_location("Sweater Required", player),
              lambda state: level_1_breakables(state, player, world) and (has_ice_shell(state, player, world)
-             or (state.has("Heart Container", player) and (can_fly(state, player, world) or is_leggy(options)))))
+             or (has_health(state, player) and (can_fly(state, player, world) or is_leggy(options)))))
 
     set_rule(multiworld.get_location("A Secret to Snowbody", player),
              lambda state: pink_door(state, player, world))
@@ -308,7 +312,7 @@ def create_location_rules(world: "SnailiadWorld") -> None:
              lambda state: boss_2(options, state, player) or red_door(state, player, world))
 
     set_rule(multiworld.get_location("Hall of Fire", player),  # todo how much health?
-             lambda state: (has_metal_shell(state, player, world) or state.has("Heart Container", player))
+             lambda state: (has_metal_shell(state, player, world) or has_health(state, player))
              and (pink_door(state, player, world) or red_door(state, player, world)))
 
     set_rule(multiworld.get_location("Scorching Snelks", player),
@@ -354,31 +358,31 @@ def create_location_rules(world: "SnailiadWorld") -> None:
              lambda state: level_3_breakables(state, player, world))
 
     set_rule(multiworld.get_location("Steel Shrine", player),  # todo how much health?
-             lambda state: red_door(state, player, world) and (has_metal_shell(state, player, world) or state.has("Heart Container", player)))
+             lambda state: red_door(state, player, world) and (has_metal_shell(state, player, world) or has_health(state, player)))
 
     set_rule(multiworld.get_location("Space Balcony (Heart)", player),
-             lambda state: level_3_breakables(state, player, world) and (has_metal_shell(state, player, world) or state.has("Heart Container", player)))
+             lambda state: level_3_breakables(state, player, world) and (has_metal_shell(state, player, world) or has_health(state, player)))
 
     set_rule(multiworld.get_location("Space Balcony (Fragment)", player),
-             lambda state: level_3_breakables(state, player, world) and (has_metal_shell(state, player, world) or state.has("Heart Container", player)))
+             lambda state: level_3_breakables(state, player, world) and (has_metal_shell(state, player, world) or has_health(state, player)))
 
     set_rule(multiworld.get_location("The Vault", player),
-             lambda state: red_door(state, player, world) and (has_metal_shell(state, player, world) or state.has("Heart Container", player)))
+             lambda state: red_door(state, player, world) and (has_metal_shell(state, player, world) or has_health(state, player)))
 
     set_rule(multiworld.get_location("Holy Hideaway", player),
-             lambda state: red_door(state, player, world) and (has_metal_shell(state, player, world) or state.has("Heart Container", player))
+             lambda state: red_door(state, player, world) and (has_metal_shell(state, player, world) or has_health(state, player))
              and (can_fly(state, player, world) or is_upside(options) or is_leggy(options) or is_blobby(options)))
 
     set_rule(multiworld.get_location("Arctic Alcove", player),
-             lambda state: red_door(state, player, world) and (has_metal_shell(state, player, world) or state.has("Heart Container", player))
+             lambda state: red_door(state, player, world) and (has_metal_shell(state, player, world) or has_health(state, player))
              and (can_fly(state, player, world) or is_upside(options) or is_leggy(options) or is_blobby(options)))
 
     set_rule(multiworld.get_location("Lost Loot", player),
-             lambda state: has_secret_knowledge(options) and red_door(state, player, world) and (has_metal_shell(state, player, world) or state.has("Heart Container", player))
+             lambda state: has_secret_knowledge(options) and red_door(state, player, world) and (has_metal_shell(state, player, world) or has_health(state, player))
              and (can_fly(state, player, world) or is_upside(options) or is_leggy(options) or is_blobby(options)))
 
     set_rule(multiworld.get_location("Reinforcements", player),
-             lambda state: red_door(state, player, world) and (has_metal_shell(state, player, world) or state.has("Heart Container", player))
+             lambda state: red_door(state, player, world) and (has_metal_shell(state, player, world) or has_health(state, player))
              and (can_fly(state, player, world) or is_upside(options) or is_leggy(options) or is_blobby(options)))
 
     set_rule(multiworld.get_location("Glitched Goodies", player),

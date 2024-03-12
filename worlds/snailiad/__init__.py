@@ -72,10 +72,14 @@ class SnailiadWorld(World):
         traps = self.options.Trap_Fill
 
         nothings = 2  # SSB and DRW will never be generated
+        nothings += 3  # Squared Snelks, Scorching Snelks, and Hidden Hideout did not have items in the original game they are rando exclusive
 
         snaliad_items: List[SnaliadItem] = []
 
         items_to_create: Dict[str, int] = {item: data.quantity_in_item_pool for item, data in item_table.items()}
+
+        if self.options.Randomization_Type.value != self.options.Randomization_Type.option_pro:
+            nothings -= 4  # Original Testing Room, Scorching Snelks, Squared Snelks, and Hidden Hideout are not locations
 
         if progressive:
             items_to_create["Pea Shooter"] = 0
@@ -126,20 +130,21 @@ class SnailiadWorld(World):
             items_to_create["Rapid Fire"] = 0
             items_to_create["Backfire"] = 1
 
+    # my initial plan to swap the progression status did not work so I swapped to this combo setup
         if helix_locks:
-            pieces = 0
-            fragments = SnaliadItem("Helix Fragment", ItemClassification.progression, self.item_name_to_id["Helix Fragment"], self.player)
-            while pieces < 20:
-                snaliad_items.append(fragments)
-                pieces += 1
-
-            items_to_create["Helix Fragment"] = 10
+            req_pieces = 25
+            fragments = [self.create_item("Helix Fragment") for _ in range(30)]
+            for i in range(0, req_pieces):
+                fragments[i].classification = ItemClassification.progression
+            items_to_create["Helix Fragment"] = 0
 
         items_to_create["Nothing"] = nothings
 
-
-
-
+        req_hearts = 4
+        hearts = [self.create_item("Heart Container") for _ in range(11)]
+        for i in range(0, req_hearts):
+            hearts[i].classification = ItemClassification.progression
+        self.multiworld.itempool += hearts
 
         for item, quantity in items_to_create.items():
             for i in range(0, quantity):
