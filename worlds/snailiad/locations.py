@@ -41,7 +41,7 @@ location_table: Dict[str, SnailiadLocationData] = {
     "Ice Climb":                        SnailiadLocationData("Spiralis Silere"),
     "The Labyrinth (Fragment)":         SnailiadLocationData("Spiralis Silere"),
     "The Labyrinth (High Jump)":        SnailiadLocationData("Spiralis Silere"),
-    "Sneaky, Sneaky":                    SnailiadLocationData("Spiralis Silere"),
+    "Sneaky, Sneaky":                   SnailiadLocationData("Spiralis Silere"),
     "Prismatic Prize (Rainbow Wave)":   SnailiadLocationData("Spiralis Silere"),
     "Prismatic Prize (Heart)":          SnailiadLocationData("Spiralis Silere"),
     # Amastrida Abyssus
@@ -74,7 +74,6 @@ location_table: Dict[str, SnailiadLocationData] = {
     "Hidden Hideout":                   SnailiadLocationData("Amastrida Abyssus"),
     "Lost Loot":                        SnailiadLocationData("Lux Lirata"),
 }
-
 
 location_name_to_id: Dict[str, int] = {name: location_based_id + index for index, name in enumerate(location_table)}
 

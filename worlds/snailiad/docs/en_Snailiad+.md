@@ -1,6 +1,6 @@
-# Snaliad+
+# Snailiad+
 
-## What is Snaliad+?
+## What is Snailiad+?
 Snailiad+ is a remake of the original Snailiad flash game, with new content and features. 
 It is a metroidvania-style game where you play as a snail named Snaily, who must save the world from an alien invasion. 
 The game features a variety of power-ups and abilities, as well as a large interconnected world to explore.

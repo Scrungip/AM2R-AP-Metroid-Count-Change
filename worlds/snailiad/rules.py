@@ -1,7 +1,6 @@
-from random import Random
-from typing import Dict, TYPE_CHECKING
+from typing import TYPE_CHECKING
 
-from worlds.generic.Rules import set_rule, forbid_item
+from worlds.generic.Rules import set_rule
 from BaseClasses import CollectionState
 from .options import SnailiadOptions
 if TYPE_CHECKING:
@@ -203,10 +202,6 @@ def create_location_rules(world: "SnailiadWorld") -> None:
     player = world.player
     options = world.options
 
-    set_rule(multiworld.get_location("Original Testing Room", player),
-             lambda state: has_secret_knowledge(options) and level_2_breakables(state, player, world) and
-             (has_high_jump(state, player, world) or is_upside(options) or is_leggy(options)))
-
     set_rule(multiworld.get_location("Leggy Snail\'s Tunnel", player),
              lambda state: level_1_breakables(state, player, world))
 
@@ -215,7 +210,7 @@ def create_location_rules(world: "SnailiadWorld") -> None:
              or (has_secret_knowledge(options) and (is_sluggy(options) or is_upside(options) or is_leggy(options) or is_leechy(options))))
 
     set_rule(multiworld.get_location("Super Secret Alcove", player),
-             lambda state: has_secret_knowledge(options) and (level_1_breakables(state, player, world) or has_high_jump(state, player, world)
+             lambda state: (has_secret_knowledge(options) or boss_4(options, state, player)) and (level_1_breakables(state, player, world) or has_high_jump(state, player, world)
              or is_sluggy(options) or is_upside(options) or is_leggy(options) or is_leechy(options)))
 
     set_rule(multiworld.get_location("Love Snail\'s Alcove", player),
@@ -276,9 +271,6 @@ def create_location_rules(world: "SnailiadWorld") -> None:
     set_rule(multiworld.get_location("Signature Croissants (Heart)", player),
              lambda state: boss_1(options, state, player) and level_1_breakables(state, player, world))
 
-    set_rule(multiworld.get_location("Squared Snelks", player),
-             lambda state: has_secret_knowledge(options) and (can_fly(state, player, world) or is_upside(options) or is_leggy(options)))
-
     set_rule(multiworld.get_location("Frost Shrine", player),
              lambda state: level_2_breakables(state, player, world))
 
@@ -314,13 +306,6 @@ def create_location_rules(world: "SnailiadWorld") -> None:
     set_rule(multiworld.get_location("Hall of Fire", player),  # todo how much health?
              lambda state: (has_metal_shell(state, player, world) or has_health(state, player))
              and (pink_door(state, player, world) or red_door(state, player, world)))
-
-    set_rule(multiworld.get_location("Scorching Snelks", player),
-             lambda state: has_secret_knowledge(options) and has_metal_shell(state, player, world) and (can_fly(state, player, world)
-             or level_3_breakables(state, player, world) or red_door(state, player, world)))
-
-    set_rule(multiworld.get_location("Hidden Hideout", player),
-             lambda state: has_secret_knowledge(options) and (can_fly(state, player, world) or level_3_breakables(state, player, world)))
 
     set_rule(multiworld.get_location("Green Cache", player),
              lambda state: red_door(state, player, world) or level_3_breakables(state, player, world))
@@ -377,13 +362,29 @@ def create_location_rules(world: "SnailiadWorld") -> None:
              lambda state: red_door(state, player, world) and (has_metal_shell(state, player, world) or has_health(state, player))
              and (can_fly(state, player, world) or is_upside(options) or is_leggy(options) or is_blobby(options)))
 
-    set_rule(multiworld.get_location("Lost Loot", player),
-             lambda state: has_secret_knowledge(options) and red_door(state, player, world) and (has_metal_shell(state, player, world) or has_health(state, player))
-             and (can_fly(state, player, world) or is_upside(options) or is_leggy(options) or is_blobby(options)))
-
     set_rule(multiworld.get_location("Reinforcements", player),
              lambda state: red_door(state, player, world) and (has_metal_shell(state, player, world) or has_health(state, player))
              and (can_fly(state, player, world) or is_upside(options) or is_leggy(options) or is_blobby(options)))
 
     set_rule(multiworld.get_location("Glitched Goodies", player),
              lambda state: pink_door(state, player, world))
+
+    if options.Randomization_Type.value == options.Randomization_Type.option_pro:
+        set_rule(multiworld.get_location("Original Testing Room", player),
+                 lambda state: has_secret_knowledge(options) and level_2_breakables(state, player, world) and
+                 (has_high_jump(state, player, world) or is_upside(options) or is_leggy(options)))
+
+        set_rule(multiworld.get_location("Squared Snelks", player),
+                 lambda state: has_secret_knowledge(options) and
+                 (can_fly(state, player, world) or is_upside(options) or is_leggy(options)))
+
+        set_rule(multiworld.get_location("Scorching Snelks", player),
+                 lambda state: has_secret_knowledge(options) and has_metal_shell(state, player, world) and (
+                 can_fly(state, player, world) or level_3_breakables(state, player, world) or red_door(state, player, world)))
+
+        set_rule(multiworld.get_location("Hidden Hideout", player),
+                 lambda state: has_secret_knowledge(options) and (can_fly(state, player, world) or level_3_breakables(state, player, world)))
+
+        set_rule(multiworld.get_location("Lost Loot", player),
+                 lambda state: has_secret_knowledge(options) and red_door(state, player, world) and (has_metal_shell(state, player, world) or
+                 has_health(state, player)) and (can_fly(state, player, world) or is_upside(options) or is_leggy(options) or is_blobby(options)))
