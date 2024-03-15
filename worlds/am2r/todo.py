@@ -1,3 +1,4 @@
-# todo AM2R client mod
-# todo Can you add the door lock indicators on the map that Varia added For the door rando patch
-# todo Upon item pickup display sprite author when using the custom sprite options
+#  todo add lava options
+#  todo remember to re-add the trap options once dodo finishes the effects
+#  todo update the get option value to use the new options definition so the console stops yelling at me
+#  todo eventually add the ability to

@@ -3,15 +3,16 @@ from collections import Counter
 from typing import Dict, List, NamedTuple, Set
 
 from BaseClasses import Item, ItemClassification, MultiWorld
-from .options import MetroidsAreChecks, MetroidsRequired, get_option_value
+from .options import MetroidsAreChecks, MetroidsRequired, get_option_value, TrapFillPercentage, RemoveFloodTrap, RemoveTossTrap, RemoveShortBeam, RemoveEMPTrap, RemoveOHKOTrap, RemoveTouhouTrap
 
 
 class ItemData(NamedTuple):
     code: int
     group: str
     classification: ItemClassification = ItemClassification.progression
+    game_id: int = 0
     required_num: int = 0
-
+    
 
 class AM2RItem(Item):
     game: str = "AM2R"
@@ -30,14 +31,32 @@ def create_fixed_item_pool() -> List[str]:
 def create_metroid_items(MetroidsRequired: MetroidsRequired, MetroidsAreChecks: MetroidsAreChecks) -> List[str]:
     metroid_count = 0
     if MetroidsAreChecks == MetroidsAreChecks.option_include_A6:
-        metroid_count = MetroidsRequired.value + 5
+        metroid_count = MetroidsRequired.value
     elif MetroidsAreChecks == MetroidsAreChecks.option_exclude_A6:
-        metroid_count += MetroidsRequired.value
+        metroid_count += MetroidsRequired.value - 5
     return ["Metroid" for _ in range(metroid_count)]
 
 
 def create_trap_items(multiworld: MultiWorld, player: int, locations_to_trap: int) -> List[str]:
     trap_pool = trap_weights.copy()
+
+    if multiworld.RemoveFloodTrap[player].value == 1:
+        del trap_pool["Flood Trap"]
+
+    if multiworld.RemoveTossTrap[player].value == 1:
+        del trap_pool["Big Toss Trap"]
+
+    if multiworld.RemoveShortBeam[player].value == 1:
+        del trap_pool["Short Beam"]
+
+    if multiworld.RemoveEMPTrap[player].value == 1:
+        del trap_pool["EMP Trap"]
+    
+    if multiworld.RemoveTouhouTrap[player].value == 1:
+        del trap_pool["Touhou Trap"]
+
+    if multiworld.RemoveOHKOTrap[player].value == 1:
+        del trap_pool["OHKO Trap"]
 
     return multiworld.random.choices(
         population=list(trap_pool.keys()),
@@ -78,47 +97,51 @@ def create_all_items(multiworld: MultiWorld, player: int) -> None:
 
 
 item_table: Dict[str, ItemData] = {
-    "Missile":                  ItemData(8678000, "Ammo", ItemClassification.filler),
-    "Super Missile":            ItemData(8678001, "Ammo", ItemClassification.progression, 1),
-    "Power Bomb":               ItemData(8678002, "Ammo", ItemClassification.progression, 2),
-    "Energy Tank":              ItemData(8678003, "Ammo", ItemClassification.filler, 1),
-    #  "Arm Cannon":            ItemData8678004, ("Equipment", ItemClassification.progression, 1),
-    #  "Morph Ball":            ItemData8678005, ("Equipment", ItemClassification.progression, 1),
-    #  "Power Grip":            ItemData8678006, ("Equipment", ItemClassification.progression, 1),
-    "Bombs":                    ItemData(8678007, "Equipment", ItemClassification.progression, 1),
-    "Spider Ball":              ItemData(8678008, "Equipment", ItemClassification.progression, 1),
-    "Hi Jump":                  ItemData(8678009, "Equipment", ItemClassification.progression, 1),
-    "Spring Ball":              ItemData(8678010, "Equipment", ItemClassification.progression, 1),
-    "Space Jump":               ItemData(8678011, "Equipment", ItemClassification.progression, 1),
-    "Speed Booster":            ItemData(8678012, "Equipment", ItemClassification.progression, 1),
-    "Screw Attack":             ItemData(8678013, "Equipment", ItemClassification.progression, 1),
-    "Varia Suit":               ItemData(8678014, "Equipment", ItemClassification.useful, 1),
-    "Gravity Suit":             ItemData(8678015, "Equipment", ItemClassification.progression, 1),
-    "Charge Beam":              ItemData(8678016, "Beam", ItemClassification.useful, 1),
-    "Wave Beam":                ItemData(8678017, "Beam", ItemClassification.useful, 1),
-    "Spazer":                   ItemData(8678018, "Beam", ItemClassification.useful, 1),
-    "Plasma Beam":              ItemData(8678019, "Beam", ItemClassification.useful, 1),
-    "Ice Beam":                 ItemData(8678020, "Beam", ItemClassification.progression, 1),
-    "Equipment Trap":           ItemData(8678021, "Trap", ItemClassification.trap),
-    "Freeze Trap":              ItemData(8678022, "Trap", ItemClassification.trap),
-    "Short Beam":               ItemData(8678023, "Trap", ItemClassification.trap),
-    "EMP Trap":                 ItemData(8678024, "Trap", ItemClassification.trap),
-    "Metroid":                  ItemData(8678025, "MacGuffin", ItemClassification.progression_skip_balancing),
-    "The Galaxy is at Peace":   ItemData(8678026, "Victory", ItemClassification.progression)
+    "Missile":                  ItemData(8678000, "Ammo", ItemClassification.filler, 15),
+    "Super Missile":            ItemData(8678001, "Ammo", ItemClassification.progression, 16, 1),
+    "Power Bomb":               ItemData(8678002, "Ammo", ItemClassification.progression, 18, 2),
+    "Energy Tank":              ItemData(8678003, "Ammo", ItemClassification.filler, 17, 1),
+    #  "Arm Cannon":            ItemData8678004, ("Equipment", ItemClassification.progression, ID, 1),
+    #  "Morph Ball":            ItemData8678005, ("Equipment", ItemClassification.progression, ID, 1),
+    #  "Power Grip":            ItemData8678006, ("Equipment", ItemClassification.progression, ID, 1),
+    "Bombs":                    ItemData(8678007, "Equipment", ItemClassification.progression, 0, 1),
+    "Spider Ball":              ItemData(8678008, "Equipment", ItemClassification.progression, 2, 1),
+    "Hi Jump":                  ItemData(8678009, "Equipment", ItemClassification.progression, 4, 1),
+    "Spring Ball":              ItemData(8678010, "Equipment", ItemClassification.progression, 3, 1),
+    "Space Jump":               ItemData(8678011, "Equipment", ItemClassification.progression, 6, 1),
+    "Speed Booster":            ItemData(8678012, "Equipment", ItemClassification.progression, 7, 1),
+    "Screw Attack":             ItemData(8678013, "Equipment", ItemClassification.progression, 8, 1),
+    "Varia Suit":               ItemData(8678014, "Equipment", ItemClassification.useful, 5, 1),
+    "Gravity Suit":             ItemData(8678015, "Equipment", ItemClassification.progression, 9, 1),
+    "Charge Beam":              ItemData(8678016, "Beam", ItemClassification.progression, 10, 1),
+    "Wave Beam":                ItemData(8678017, "Beam", ItemClassification.useful, 12, 1),
+    "Spazer":                   ItemData(8678018, "Beam", ItemClassification.useful, 13, 1),
+    "Plasma Beam":              ItemData(8678019, "Beam", ItemClassification.useful, 14, 1),
+    "Ice Beam":                 ItemData(8678020, "Beam", ItemClassification.progression, 11, 1),
+    "Flood Trap":               ItemData(8678021, "Trap", ItemClassification.trap, 21),
+    "Big Toss Trap":            ItemData(8678022, "Trap", ItemClassification.trap, 22),
+    "Short Beam":               ItemData(8678023, "Trap", ItemClassification.trap, 23),
+    "EMP Trap":                 ItemData(8678024, "Trap", ItemClassification.trap, 24),
+    "OHKO Trap":                ItemData(8678026, "Trap", ItemClassification.trap, 25),
+    "Touhou Trap":              ItemData(8678027, "Trap", ItemClassification.trap, 26),
+    "Metroid":                  ItemData(8678025, "MacGuffin", ItemClassification.progression_skip_balancing, 19),
+    "The Galaxy is at Peace":   ItemData(None, "Victory", ItemClassification.progression)
 
 }
-
 filler_weights: Dict[str, int] = {
     "Missile":          44,
-    "Super Missile":    10,
-    "Power Bomb":       10,
-    "Energy Tank":      10
+    "Super Missile":    9,
+    "Power Bomb":       8,
+    "Energy Tank":      9
 }
+
 trap_weights: Dict[str, int] = {
-    "Equipment Trap":       1,
-    "Freeze Trap":          1,
+    "Flood Trap":           1,
+    "Big Toss Trap":        1,
     "Short Beam":           1,
-    "EMP Trap":             1
+    "EMP Trap":             1,
+    "Touhou Trap":          1,
+    "OHKO Trap":            1
 }
 
 
@@ -138,6 +161,7 @@ trap_items: List[str] = list(filter(item_is_trap, item_table.keys()))
 filler_items: List[str] = list(filter(item_is_filler, item_table.keys()))
 
 item_name_to_id: Dict[str, int] = {name: data.code for name, data in item_table.items()}
+
 
 item_name_groups: Dict[str, Set[str]] = {
     group: set(item_names) for group, item_names in itertools.groupby(item_table, get_item_group)

@@ -11,6 +11,7 @@ class LocationData(NamedTuple):
     region: str
     name: str
     code: Optional[int]
+    game_id: int = 0
     rule: Callable[[CollectionState], bool] = lambda state: True
 
 def get_location_datas(world: Optional[MultiWorld], player: Optional[int]):
@@ -18,181 +19,177 @@ def get_location_datas(world: Optional[MultiWorld], player: Optional[int]):
     logic = AM2RLogic(world, player)
 
     location_table: List[LocationData] = [
-        LocationData("Main Caves", "Main Caves: Vertical Spike Room Upper",  8680000, lambda state: logic.AM2R_can_fly(state) or state.has("Spider Ball", player) and state.has("Bombs", player)),  # spider + bomb
-        LocationData("Main Caves", "Main Caves: Vertical Spike Room Lower",  8680001, logic.AM2R_can_bomb),  # bomb
-        LocationData("Main Caves", "Main Caves: Crumble Spike Room",  8680002, lambda state: state.has_any({'Hi Jump', 'Space Jump'}, player) and logic.AM2R_can_bomb(state)),  # jump. just jump. ibj and dbj can come later in advanced logic frogtroll
-        LocationData("Main Caves", "Main Caves: Maze",  8680003),
-        LocationData("Main Caves", "Main Caves: Shinespark Before the drop",  8680004, lambda state: state.has("Speed Booster", player)),  # speed
-        LocationData("Main Caves", "Main Caves: Shinespark After the drop",  8680005, lambda state: state.has("Speed Booster", player)),  # speed
+        LocationData("Main Caves", "Main Caves: Spider Ball Challenge Upper",  8680000, 53, lambda state: logic.AM2R_can_fly(state) and logic.AM2R_can_bomb(state)),  # spider + bomb
+        LocationData("Main Caves", "Main Caves: Spider Ball Challenge Lower",  8680001, 52, logic.AM2R_can_bomb),  # bomb
+        LocationData("Main Caves", "Main Caves: Hi-Jump Challenge",  8680002, 57, lambda state: state.has_any({'Hi Jump', 'Space Jump'}, player) and logic.AM2R_can_bomb(state)),  # jump. just jump. ibj and dbj can come later in advanced logic frogtroll
+        LocationData("Main Caves", "Main Caves: Spiky Maze",  8680003, 210),
+        LocationData("Main Caves", "Main Caves: Shinespark Before The Pit",  8680004, 54, lambda state: state.has("Speed Booster", player)),  # speed
+        LocationData("Main Caves", "Main Caves: Shinespark After The Pit",  8680005, 55, lambda state: state.has("Speed Booster", player)),  # speed
 
-        LocationData("Golden Temple", "Golden Temple: Bombs",  8680006),
-        LocationData("Golden Temple", "Golden Temple: Below Bombs",  8680007, logic.AM2R_can_bomb),  # bomb
-        LocationData("Golden Temple", "Golden Temple: Hidden Energy Tank",  8680008, logic.AM2R_can_bomb),  # bomb
-        LocationData("Golden Temple", "Golden Temple: Charge Beam",  8680009),
-        LocationData("Golden Temple", "Golden Temple: Armory Left",  8680010),
-        LocationData("Golden Temple", "Golden Temple: Armory Upper",  8680011),
-        LocationData("Golden Temple", "Golden Temple: Armory Lower",  8680012),
-        LocationData("Golden Temple", "Golden Temple: Armory Behind The False Wall ",  8680013, logic.AM2R_can_bomb),  # bomb
-        LocationData("Golden Temple", "Golden Temple: Puzzle Room 1",  8680014),
-        LocationData("Golden Temple", "Golden Temple: Puzzle Room 2",  8680015),
-        LocationData("Golden Temple", "Golden Temple: Puzzle Room 3",  8680016),
-        LocationData("Golden Temple", "Golden Temple: Spider Ball",  8680017),
-        LocationData("Golden Temple", "Golden Temple: Celling Missile",  8680018, lambda state: state.has("Speed Booster", player) or logic.AM2R_can_spider(state)),  # canspider
-        LocationData("Golden Temple", "Golden Temple: EMP room",  8680019, lambda state: state.has("Super Missile", player) and logic.AM2R_has_ballspark(state) and logic.AM2R_can_bomb(state) and state.has("Screw Attack", player)),  # super + ballspark
+        LocationData("Golden Temple", "Golden Temple: Bombs",  8680006, 0),
+        LocationData("Golden Temple", "Golden Temple: Below Bombs",  8680007, 100, logic.AM2R_can_bomb),  # bomb
+        LocationData("Golden Temple", "Golden Temple: Hidden Energy Tank",  8680008, 103, logic.AM2R_can_bomb),  # bomb
+        LocationData("Golden Temple", "Golden Temple: Charge Beam",  8680009, 10),
+        LocationData("Golden Temple", "Golden Temple: Armory Left",  8680010, 104),
+        LocationData("Golden Temple", "Golden Temple: Armory Upper",  8680011, 106),
+        LocationData("Golden Temple", "Golden Temple: Armory Lower",  8680012, 105),
+        LocationData("Golden Temple", "Golden Temple: Armory Behind The False Wall",  8680013, 107, logic.AM2R_can_bomb),  # bomb
+        LocationData("Golden Temple", "Golden Temple: 3-Orb Hallway 1",  8680014, 101),
+        LocationData("Golden Temple", "Golden Temple: 3-Orb Hallway 2",  8680015, 108),
+        LocationData("Golden Temple", "Golden Temple: 3-Orb Hallway 3",  8680016, 102),
+        LocationData("Golden Temple", "Golden Temple: Spider Ball",  8680017, 2),
+        LocationData("Golden Temple", "Golden Temple: Exterior Ceiling",  8680018, 109, lambda state: state.has("Speed Booster", player) or logic.AM2R_can_spider(state)),  # canspider
+        LocationData("Golden Temple", "Golden Temple: EMP Room",  8680019, 110, lambda state: state.has("Super Missile", player) and logic.AM2R_has_ballspark(state) and logic.AM2R_can_bomb(state) and state.has("Screw Attack", player)),  # super + ballspark
 
-        LocationData("Guardian", "Guardian: Up Above",  8680020, lambda state: logic.AM2R_can_bomb(state) and ((logic.AM2R_can_schmove(state) and state.has("Bombs", player)) or logic.AM2R_can_fly(state))),  # bomb + schmove
-        LocationData("Guardian", "Guardian: Behind The Door",  8680021, lambda state: state.has("Power Bomb", player) and ((logic.AM2R_can_schmove(state) and state.has("Bombs", player)) or logic.AM2R_can_fly(state))),  # PB + schmove
+        LocationData("Guardian", "Guardian: Up Above",  8680020, 111, lambda state: logic.AM2R_can_bomb(state) and ((logic.AM2R_can_schmove(state) and state.has("Bombs", player)) or logic.AM2R_can_fly(state))),  # bomb + schmove
+        LocationData("Guardian", "Guardian: Behind The Door",  8680021, 112, lambda state: state.has("Power Bomb", player) and ((logic.AM2R_can_schmove(state) and state.has("Bombs", player)) or logic.AM2R_can_fly(state))),  # PB + schmove
 
-        LocationData("Hydro Station", "Hydro Station: Cliff",  8680022, logic.AM2R_can_fly),
-        LocationData("Hydro Station", "Hydro Station: Morph Tunnel",  8680023),
-        LocationData("Hydro Station", "Hydro Station: Turbine Room",  8680024, logic.AM2R_can_bomb),  # bomb
-        LocationData("Hydro Station", "Hydro Station: Not so Secret Tunnel",  8680025, logic.AM2R_can_schmove),  # schmove
-        LocationData("Hydro Station", "Hydro Station: Water puzzle Beside Varia",  8680026, logic.AM2R_can_bomb),  # bomb
-        LocationData("Hydro Station", "Hydro Station: Varia Suit",  8680027, logic.AM2R_can_bomb),  # bomb
-        LocationData("Hydro Station", "Hydro Station: EMP room",  8680028, lambda state: state.has("Super Missile", player) and state.has("Speed Booster", player)),  # super + speed
+        LocationData("Hydro Station", "Hydro Station: Cliff",  8680022, 163, logic.AM2R_can_fly),
+        LocationData("Hydro Station", "Hydro Station: Side Morph Tunnel",  8680023, 152),
+        LocationData("Hydro Station", "Hydro Station: Turbine Room",  8680024, 150, logic.AM2R_can_bomb),  # bomb
+        LocationData("Hydro Station", "Hydro Station: Not so Secret Tunnel",  8680025, 151, logic.AM2R_can_schmove),  # schmove
+        LocationData("Hydro Station", "Hydro Station: Water Pressure Pre-Varia",  8680026, 159, logic.AM2R_can_bomb),  # bomb
+        LocationData("Hydro Station", "Hydro Station: Varia Suit",  8680027, 5, logic.AM2R_can_bomb),  # bomb
+        LocationData("Hydro Station", "Hydro Station: EMP Room",  8680028, 162, lambda state: state.has("Super Missile", player) and state.has("Speed Booster", player)),  # super + speed
 
-        LocationData("Arachnus", "Arachnus: Boss", 8680029),
+        LocationData("Arachnus", "Arachnus: Boss", 8680029, 3),
 
-        LocationData("Inner Hydro Station", "Hydro Station: Wave Beam",  8680030, logic.AM2R_can_bomb),
-        LocationData("Inner Hydro Station", "Hydro Station: Below Tower Pipe Upper",  8680031, lambda state: logic.AM2R_can_schmove(state) and logic.AM2R_can_bomb(state)),  # schmove
-        LocationData("Inner Hydro Station", "Hydro Station: Below Tower Pipe Lower",  8680032,  logic.AM2R_can_bomb),
-        LocationData("Inner Hydro Station", "Hydro Station: Dead End Missile ",  8680033,  logic.AM2R_can_bomb),
-        LocationData("Inner Hydro Station", "Hydro Station: Hi Jump",  8680034),
-        LocationData("Inner Hydro Station", "Hydro Station: Behind Hi Jump Upper",  8680035, lambda state: logic.AM2R_can_schmove(state) and logic.AM2R_can_bomb(state)),
-        LocationData("Inner Hydro Station", "Hydro Station: Behind Hi Jump",  8680036, logic.AM2R_can_bomb),
+        LocationData("Inner Hydro Station", "Hydro Station: Wave Beam",  8680030, 12, logic.AM2R_can_bomb),
+        LocationData("Inner Hydro Station", "Hydro Station: Below Tower Pipe Upper",  8680031, 153, lambda state: logic.AM2R_can_schmove(state) and logic.AM2R_can_bomb(state)),  # schmove
+        LocationData("Inner Hydro Station", "Hydro Station: Below Tower Pipe Lower",  8680032, 154, logic.AM2R_can_bomb),
+        LocationData("Inner Hydro Station", "Hydro Station: Dead End",  8680033, 155, logic.AM2R_can_bomb),
+        LocationData("Inner Hydro Station", "Hydro Station: Hi-Jump",  8680034, 4),
+        LocationData("Inner Hydro Station", "Hydro Station: Behind Hi-Jump Upper",  8680035, 156, lambda state: logic.AM2R_can_schmove(state) and logic.AM2R_can_bomb(state)),
+        LocationData("Inner Hydro Station", "Hydro Station: Behind Hi-Jump",  8680036, 157, logic.AM2R_can_bomb),
 
-        LocationData("Hydro Nest", "Hydro Nest: Below the Walkway",  8680037, logic.AM2R_can_bomb),  # Bomb
-        LocationData("Hydro Nest", "Hydro Nest: Speed Celling",  8680038, lambda state: state.has("Speed Booster", player) and state.has("Speed Booster", player)),  # speed
-        LocationData("Hydro Nest", "Hydro Nest: Behind the Wall",  8680039, lambda state: state.has("Power Bomb", player) and state.has("Screw Attack", player) and state.has("Speed Booster", player)),  # PB + screw/speed
+        LocationData("Hydro Nest", "Hydro Nest: Below the Walkway",  8680037, 158, logic.AM2R_can_bomb),  # Bomb
+        LocationData("Hydro Nest", "Hydro Nest: Speed Ceiling",  8680038, 161, lambda state: state.has("Speed Booster", player) and state.has("Speed Booster", player)),  # speed
+        LocationData("Hydro Nest", "Hydro Nest: Behind the Wall",  8680039, 160, lambda state: state.has("Power Bomb", player) and state.has("Screw Attack", player) and state.has("Speed Booster", player)),  # PB + screw/speed
 
-        LocationData("Industrial Complex Nest", "Industrial Complex: Above Save",  8680040),
-        LocationData("Industrial Complex Nest", "Industrial Complex: EMP Room",  8680041, lambda state: state.has("Power Bomb", player) and state.has("Super Missile", player) and state.can_reach("EMP", "Region", player)),  # PB + super
-        LocationData("Industrial Complex Nest", "Industrial Complex Nest: Nest Shinespark",  8680042, lambda state: state.has("Super Missile", player) and state.has("Speed Booster", player) and logic.AM2R_can_schmove(state) and logic.AM2R_can_bomb(state)),  # super + schmove
+        LocationData("Industrial Complex Nest", "Industrial Complex: Above Save",  8680040, 214),
+        LocationData("Industrial Complex Nest", "Industrial Complex: EMP Room",  8680041, 213, lambda state: state.has("Power Bomb", player) and state.has("Super Missile", player) and state.can_reach("EMP", "Region", player)),  # PB + super
+        LocationData("Industrial Complex Nest", "Industrial Complex Nest: Nest Shinespark",  8680042, 209, lambda state: state.has("Super Missile", player) and state.has("Speed Booster", player) and logic.AM2R_can_schmove(state) and logic.AM2R_can_bomb(state)),  # super + schmove
 
-        LocationData("Pre Industrial Complex", "Industrial Complex: In the Sand",  8680043),
-        LocationData("Pre Industrial Complex", "Industrial Complex: Complex Side After Tunnel",  8680044, lambda state: (state.has("Speed Booster", player) or logic.AM2R_can_spider(state)) and logic.AM2R_can_bomb(state)),
-        LocationData("Pre Industrial Complex", "Industrial Complex: Complex Side Tunnel",  8680045, lambda state: state.has("Speed Booster", player) or logic.AM2R_can_spider(state)),
-        LocationData("Pre Industrial Complex", "Industrial Complex: Save Room",  8680046, lambda state: state.has("Speed Booster", player) or logic.AM2R_can_spider(state)),
-        LocationData("Pre Industrial Complex", "Industrial Complex: Spazer",  8680047, lambda state: state.has("Speed Booster", player) or logic.AM2R_can_spider(state)),
-        LocationData("Pre Industrial Complex", "Industrial Complex: Gamma Spark",  8680048, lambda state: state.has("Speed Booster", player)),
-        LocationData("Pre Industrial Complex", "Industrial Complex: Speed Booster",  8680049, lambda state: state.has("Speed Booster", player) or logic.AM2R_can_bomb(state)),  # bomb
+        LocationData("Pre Industrial Complex", "Industrial Complex: In the Sand",  8680043, 211),
+        LocationData("Pre Industrial Complex", "Industrial Complex: Complex Side After Tunnel",  8680044, 202, lambda state: (state.has("Speed Booster", player) or logic.AM2R_can_spider(state)) and logic.AM2R_can_bomb(state)),
+        LocationData("Pre Industrial Complex", "Industrial Complex: Complex Side Tunnel",  8680045, 200, lambda state: state.has("Speed Booster", player) or logic.AM2R_can_spider(state)),
+        LocationData("Pre Industrial Complex", "Industrial Complex: Behind the Green Door", 8680146, 212, lambda state: state.has("Speed Booster", player) or logic.AM2R_can_spider(state)),
+        LocationData("Pre Industrial Complex", "Industrial Complex: Save Room",  8680046, 203, lambda state: state.has("Speed Booster", player) or logic.AM2R_can_spider(state)),
+        LocationData("Pre Industrial Complex", "Industrial Complex: Spazer Beam",  8680047, 13, lambda state: state.has("Speed Booster", player) or logic.AM2R_can_spider(state)),
+        LocationData("Pre Industrial Complex", "Industrial Complex: Sisyphus Spark",  8680048, 204, lambda state: state.has("Speed Booster", player)),
+        LocationData("Pre Industrial Complex", "Industrial Complex: Speed Booster",  8680049, 7, lambda state: state.has("Speed Booster", player) or logic.AM2R_can_bomb(state)),  # bomb
 
-        LocationData("Torizo Ascended", "Torizo Ascended: Boss", 8680050, logic.AM2R_can_schmove),
+        LocationData("Torizo Ascended", "Torizo Ascended: Boss", 8680050, 6, logic.AM2R_can_schmove),
 
-        LocationData("Industrial Complex", "Industrial Complex: Conveyor Belt Room",  8680051, lambda state: state.has("Speed Booster", player)),
-        LocationData("Industrial Complex", "Industrial Complex: Doom Treadmill",  8680052, lambda state: state.has("Speed Booster", player) and logic.AM2R_can_bomb(state)),
-        LocationData("Industrial Complex", "Industrial Complex: By the Not Ramp of Doom",  8680053, lambda state: state.has("Speed Booster", player)),
-        LocationData("Industrial Complex", "Industrial Complex: In the Not Ramp of Doom", 8680054, lambda state: state.has("Super Missile", player) and state.has("Speed Booster", player)),
-        LocationData("Industrial Complex", "Industrial Complex: First Supers",  8680055, lambda state: state.has("Super Missile", player) and state.has("Speed Booster", player)),
+        LocationData("Industrial Complex", "Industrial Complex: Conveyor Belt Room",  8680051, 205, lambda state: state.has("Speed Booster", player)),
+        LocationData("Industrial Complex", "Industrial Complex: Doom Treadmill",  8680052, 201, lambda state: state.has("Speed Booster", player) and logic.AM2R_can_bomb(state)),
+        LocationData("Industrial Complex", "Industrial Complex: Complex Hub Shinespark",  8680053, 208, lambda state: state.has("Speed Booster", player)),
+        LocationData("Industrial Complex", "Industrial Complex: Complex Hub in the Floor", 8680054, 207, lambda state: state.has("Super Missile", player) and state.has("Speed Booster", player)),
+        LocationData("Industrial Complex", "Industrial Complex: Skippy Reward",  8680055, 206, lambda state: state.has("Super Missile", player) and state.has("Speed Booster", player)),
 
-        LocationData("GFS Thoth", "GFS Thoth: Research Camp",  8680056),
-        LocationData("GFS Thoth", "GFS Thoth: Hornoad room",  8680057, lambda state: state.has("Power Bomb", player)),
-        LocationData("GFS Thoth", "GFS Thoth: Outside the Front of the Ship",  8680058, lambda state: state.has("Power Bomb", player)),
-        LocationData("GFS Thoth", "GFS Thoth: Genesis",  8680059, lambda state: state.has("Power Bomb", player)),
+        LocationData("GFS Thoth", "GFS Thoth: Research Camp",  8680056, 215),
+        LocationData("GFS Thoth", "GFS Thoth: Hornoad Room",  8680057, 58, lambda state: state.has("Power Bomb", player)),
+        LocationData("GFS Thoth", "GFS Thoth: Outside the Front of the Ship",  8680058, 59, lambda state: state.has("Power Bomb", player)),
+        LocationData("Genesis", "Genesis: Boss",  8680059, 50, lambda state: state.has("Power Bomb", player)),
 
-        LocationData("The Tower", "The Tower: Beside Hydro Pipe",  8680060, lambda state: state.has("Screw Attack", player)),
-        LocationData("The Tower", "The Tower: Right Side of Tower",  8680061),
-        LocationData("The Tower", "The Tower: In the Ceiling",  8680062, lambda state: logic.AM2R_can_bomb(state) and (state.has("Space Jump", player) or state.has("Spider Ball", player))),  # spider + bomb
-        LocationData("The Tower", "The Tower: Dark Maze",  8680063, logic.AM2R_can_bomb),  # bomb
-        LocationData("The Tower", "The Tower: Outside the Dark Maze",  8680064, logic.AM2R_can_bomb),
-        LocationData("The Tower", "The Tower: Plasma Beam",  8680065, lambda state: logic.AM2R_can_bomb(state) and state.can_reach("Tester", "Region", player)),
-        LocationData("The Tower", "The Tower: Beside Tester",  8680066, lambda state: state.has("Power Bomb", player)),  # pb
-        LocationData("The Tower", "The Tower: Left side of tower",  8680067, lambda state: state.has("Power Bomb", player)),  # pb
+        LocationData("The Tower", "The Tower: Beside Hydro Pipe",  8680060, 259, lambda state: state.has("Screw Attack", player)),
+        LocationData("The Tower", "The Tower: Right Side of Tower",  8680061, 250),
+        LocationData("The Tower", "The Tower: In the Ceiling",  8680062, 257, lambda state: logic.AM2R_can_bomb(state) and (state.has("Space Jump", player) or state.has("Spider Ball", player))),  # spider + bomb
+        LocationData("The Tower", "The Tower: Dark Maze",  8680063, 252, lambda state: logic.AM2R_can_bomb(state) and state.has("Spider Ball", player)),  # bomb
+        LocationData("The Tower", "The Tower: After Dark Maze",  8680064, 251, lambda state: logic.AM2R_can_bomb(state) and state.has("Spider Ball", player)),
+        LocationData("The Tower", "The Tower: Plasma Beam",  8680065, 14, lambda state: logic.AM2R_can_bomb(state) and state.can_reach("Tester", "Region", player)),
+        LocationData("The Tower", "The Tower: After Tester",  8680066, 256, lambda state: state.has("Power Bomb", player)),  # pb
+        LocationData("The Tower", "The Tower: Outside Reactor",  8680067, 258, lambda state: state.has("Power Bomb", player)),  # pb
 
-        LocationData("Geothermal", "The Tower: Geothermal Reactor",  8680068),
-        LocationData("Geothermal", "The Tower: Post Geothermal Chozo",  8680069, lambda state: state.has("Power Bomb", player)),  # pb
-        LocationData("Geothermal", "The Tower: Post Geothermal Shinespark",  8680070, lambda state: state.has("Power Bomb", player) and state.has("Speed Booster", player) and state.has("Super Missile", player)),  # Pb + spped + super
+        LocationData("Geothermal", "The Tower: Geothermal Reactor",  8680068, 253, lambda state: state.has("Power Bomb", player) and state.has("Speed Booster", player) and logic.AM2R_can_schmove(state)),  # pb + speed + spider
+        LocationData("Geothermal", "The Tower: Post Reactor Chozo",  8680069, 254, lambda state: state.has("Power Bomb", player, 3) and state.has("Speed Booster", player) and logic.AM2R_can_schmove(state)),  # pb
+        LocationData("Geothermal", "The Tower: Post Reactor Shinespark",  8680070, 255, lambda state: state.has("Power Bomb", player, 3) and state.has("Speed Booster", player) and logic.AM2R_can_schmove(state) and state.has("Super Missile", player)),  # Pb + spped + super
 
-        LocationData("Underwater Distribution Center", "Distribution Center: Main Room Shinespark",  8680071, lambda state: state.has("Gravity Suit", player) and state.has("Speed Booster", player)),  # grav + screw
-        LocationData("Underwater Distribution Center", "Distribution Center: Speed Hallway",  8680072, lambda state: state.has("Speed Booster", player) and state.has("Gravity Suit", player)),  # speed + grav
+        LocationData("Underwater Distribution Center", "Distribution Center: Main Room Shinespark",  8680071, 309, lambda state: state.has("Gravity Suit", player) and state.has("Speed Booster", player)),  # grav + screw
+        LocationData("Underwater Distribution Center", "Distribution Center: Underwater Speed Hallway",  8680072, 307, lambda state: state.has("Speed Booster", player) and state.has("Gravity Suit", player)),  # speed + grav
 
-        LocationData("EMP", "Distribution Center: After EMP Activation",  8680073, lambda state: state.has("Screw Attack", player)),  # screw
+        LocationData("EMP", "Distribution Center: After EMP Activation",  8680073, 300, lambda state: state.has("Screw Attack", player) and state.has("Speed Booster", player)),  # screw
 
-        LocationData("Underwater Distro Connection", "Distribution Center: Spiderball Spike \"Maze\"",  8680074, lambda state: state.has("Spider Ball", player) and state.has("Gravity Suit", player)),  # spiderball underwater
-        LocationData("Underwater Distro Connection", "Distribution Center: Before Spikey Tunnel",  8680075),
-        LocationData("Underwater Distro Connection", "Distribution Center: Spikey Tunnel Shinespark",  8680076, lambda state: state.has("Gravity Suit", player) and state.has("Speed Booster", player)),  # grav + speed
-        LocationData("Underwater Distro Connection", "Distribution Center: After Spikey Tunnel",  8680078, lambda state: state.has("Power Bomb", player) and state.has("Speed Booster", player) and state.has("Gravity Suit", player) and state.has("Space Jump", player)),  # speed + grav + space + pb
+        LocationData("Underwater Distro Connection", "Distribution Center: Spider Ball Crumble Spike \"Maze\"",  8680074, 303, lambda state: state.has("Spider Ball", player) and state.has("Gravity Suit", player)),  # spiderball underwater
+        LocationData("Underwater Distro Connection", "Distribution Center: Before Spikey Trial",  8680075, 304),
+        LocationData("Underwater Distro Connection", "Distribution Center: Spikey Trial Shinespark",  8680076, 305, lambda state: state.has("Gravity Suit", player) and state.has("Speed Booster", player)),  # grav + speed
+        LocationData("Underwater Distro Connection", "Distribution Center: After Spikey Trial",  8680078, 306, lambda state: state.has("Power Bomb", player) and state.has("Speed Booster", player) and state.has("Gravity Suit", player) and state.has("Space Jump", player)),  # speed + grav + space + pb
 
-        LocationData("Screw Attack", "Distribution Center: Screw Attack", 8680080),
-        LocationData("Pipe Hell Outside", "Distribution Center: Outside after Gravity", 8680081, lambda state: state.has("Power Bomb", player) and state.has("Space Jump", player) and state.has("Gravity Suit", player)),  # pb + space + grav
-        LocationData("Pipe Hell R", "Distribution Center: Before Underwater Pipe", 8680082, lambda state: state.has("Power Bomb", player) and state.has("Speed Booster", player)),  # pb + speed
+        LocationData("Screw Attack", "Distribution Center: Screw Attack", 8680080, 8),
+        LocationData("Pipe Hell Outside", "Distribution Center: Exterior Post-Gravity", 8680081, 302, lambda state: state.has("Power Bomb", player) and state.has("Space Jump", player) and state.has("Gravity Suit", player)),  # pb + space + grav
+        LocationData("Pipe Hell R", "Distribution Center: Spectator Jail", 8680082, 301, lambda state: state.has("Power Bomb", player) and state.has("Speed Booster", player)),  # pb + speed
 
-        LocationData("Gravity", "Distribution Center: Before Gravity", 8680083, lambda state: (state.has("Bombs", player) and (state.has("ChargeBeam", player) or state.has("Gravity Suit", player))) or state.has("Power Bomb", player)),  # bomb + charge/gravity / PB
-        LocationData("Gravity", "Distribution Center: Gravity", 8680084, logic.AM2R_can_bomb),  # can bomb
+        LocationData("Gravity", "Distribution Center: Before Gravity", 8680083, 308, lambda state: (state.has("Bombs", player) and (state.has("ChargeBeam", player) or state.has("Gravity Suit", player))) or state.has("Power Bomb", player)),  # bomb + charge/gravity / PB
+        LocationData("Gravity", "Distribution Center: Gravity Suit", 8680084, 9, logic.AM2R_can_bomb),  # can bomb
 
-        LocationData("Ice Beam", "Serris: Ice Beam", 8680085, lambda state: state.has("Ice Beam", player) and (state.has("Super Missile", player) or state.has("Speed Booster", player))),  # speed / Supers
+        LocationData("Ice Beam", "Serris: Ice Beam", 8680085, 11, lambda state: state.has("Ice Beam", player) and (state.has("Super Missile", player) or state.has("Speed Booster", player))),  # speed / Supers
 
-        LocationData("Deep Caves", "Deep Caves: Ball Spark",  8680086, logic.AM2R_has_ballspark),
-        LocationData("Deep Caves", "Deep Caves: Behind the Bomb Block",  8680087, logic.AM2R_can_bomb),
+        LocationData("Deep Caves", "Deep Caves: Drivel Ballspark",  8680086, 56, lambda state: state.has("Gravity Suit", player) and logic.AM2R_has_ballspark(state)),
+        LocationData("Deep Caves", "Deep Caves: Ramulken Lava Pool",  8680087, 60, logic.AM2R_can_bomb),
 
-        LocationData("Deep Caves", "Deep Caves: After Omega",  8680088),
+        LocationData("Deep Caves", "Deep Caves: After Omega",  8680088, 51),
 
         LocationData("Research Station", "The Last Metroid is in Captivity", EventId),
+
+        LocationData("First Alpha", "The Forgotten Alpha", 8680100, 310),
+
+        LocationData("Golden Temple", "Golden Temple: Friendly Spider", 8680101, 311, logic.AM2R_can_spider),
+        LocationData("Golden Temple Nest", "Golden Temple Nest: Moe", 8680102, 312, logic.AM2R_can_bomb),  # Loj
+        LocationData("Golden Temple Nest", "Golden Temple Nest: Larry", 8680103, 313, logic.AM2R_can_bomb),    # Loj
+        LocationData("Golden Temple Nest", "Golden Temple Nest: Curly", 8680104, 314, logic.AM2R_can_bomb),    # Loj
+
+        LocationData("Main Caves", "Main Caves: Freddy Fazbear", 8680105, 315),  # Epsilon
+        LocationData("Hydro Station", "Hydro Station: Turbine Terror", 8680106, 316),  # Xander
+        LocationData("Hydro Station", "Hydro Station: The Lookout", 8680107, 318, logic.AM2R_can_schmove),  # Xander
+        LocationData("Hydro Station", "Hydro Station: Recent Guardian", 8680108, 317),  # ANX
+
+        LocationData("Hydro Nest", "Hydro Nest: EnderMahan", 8680109, 319),
+        LocationData("Hydro Nest", "Hydro Nest: Carnage Awful", 8680110, 320),
+        LocationData("Hydro Nest", "Hydro Nest: Venom Awesome", 8680111, 321),
+        LocationData("Hydro Nest", "Hydro Nest: Something More, Something Awesome", 8680112, 322),
+
+        LocationData("Industrial Complex Nest", "Industrial Nest: Mimolette", 8680113, 326, lambda state: state.has("Speed Booster", player) or state.has("Super Missile", player)),
+        LocationData("Industrial Complex Nest", "Industrial Nest: The Big Cheese", 8680114, 327, lambda state: state.has("Speed Booster", player) or state.has("Super Missile", player)),
+        LocationData("Industrial Complex Nest", "Industrial Nest: Mohwir", 8680115, 328, lambda state: logic.AM2R_can_bomb(state) and (state.has("Speed Booster", player) or state.has("Super Missile", player))),
+        LocationData("Industrial Complex Nest", "Industrial Nest: Chirn", 8680116, 329, lambda state: logic.AM2R_can_bomb(state) and (state.has("Speed Booster", player) or state.has("Super Missile", player))),
+        LocationData("Industrial Complex Nest", "Industrial Nest: BHHarbinger", 8680117, 330, lambda state: logic.AM2R_can_bomb(state) and (state.has("Speed Booster", player) or state.has("Super Missile", player))),
+        LocationData("Industrial Complex Nest", "Industrial Nest: The Abyssal Creature", 8680118, 331, lambda state: logic.AM2R_can_bomb(state) and state.has("Spider Ball", player) and (state.has("Speed Booster", player) or state.has("Super Missile", player))),
+
+        LocationData("Pre Industrial Complex", "Industrial Complex: Sisyphus", 8680119, 323, logic.AM2R_can_spider),  # Mimo
+        LocationData("Pre Industrial Complex", "Industrial Complex: And then there\'s this Asshole", 8680120, 332, logic.AM2R_can_spider),  # ANX
+
+        LocationData("Industrial Complex", "Inside Industrial: Guardian of Doom Treadmill", 8680121, 324, lambda state: state.has("Speed Booster", player) and logic.AM2R_can_bomb(state)),
+        LocationData("Industrial Complex", "Inside Industrial: Rawsome1234 by the Lava Lake", 8680122, 325, lambda state: state.has("Speed Booster", player) and logic.AM2R_can_bomb(state)),
+
+        LocationData("GFS Thoth", "Dual Alphas: Marco", 8680123, 333),  # Epsilon
+        LocationData("GFS Thoth", "Dual Alphas: Polo", 8680124, 334),  # Epsilon
+
+        LocationData("Mines", "Mines: Unga", 8680125, 335, lambda state: state.has("Super Missile", player) and (state.has("Space Jump", player) or state.has("Spider Ball", player))),
+        LocationData("Mines", "Mines: Gunga", 8680126, 336, lambda state: state.has("Super Missile", player) and (state.has("Space Jump", player) or state.has("Spider Ball", player))),
+
+        LocationData("The Tower", "The Tower: Patricia", 8680127, 337, logic.AM2R_can_fly),  # Mahan
+        LocationData("The Tower", "The Tower: Variable \"GUH\"", 8680128, 338, logic.AM2R_can_spider),  # ANX
+        LocationData("The Tower", "Ruler of The Tower: Slagathor", 8680129, 340, logic.AM2R_can_bomb),  # Rawsome
+        LocationData("The Tower", "The Tower: Mr.Sandman", 8680130, 339, logic.AM2R_can_schmove),  # Xander
+        LocationData("The Tower", "The Tower: Anakin", 8680131, 341, logic.AM2R_can_spider),  # Xander
+        LocationData("The Tower", "The Tower: Xander", 8680132, 342, lambda state: state.has("Space Jump", player)),
+
+        LocationData("EMP", "EMP: Sir Zeta Commander of the Alpha Squadron", 8680133, 343, lambda state: logic.AM2R_can_bomb(state) and state.has("Speed Booster", player)),  # Lucina
+
+        LocationData("Pipe Hell R", "Alpha Squadron: Timmy", 8680134, 346),  # Lucina
+        LocationData("Pipe Hell R", "Alpha Squadron: Tommy", 8680135, 345),  # Lucina
+        LocationData("Pipe Hell R", "Alpha Squadron: Terry", 8680136, 348),  # Lucina
+        LocationData("Pipe Hell R", "Alpha Squadron: Telly", 8680137, 347),  # Lucina
+        LocationData("Pipe Hell R", "Alpha Squadron: Martin", 8680138, 344),
+
+        LocationData("Underwater Distro Connection", "Underwater: Gamma Bros Mario", 8680139, 349),  # Lucina
+        LocationData("Underwater Distro Connection", "Underwater: Gamma Bros Luigi", 8680140, 350),  # Lucina
+
+        LocationData("Deep Caves", "Deep Caves: Lil\' Bro", 8680141, 351),
+        LocationData("Deep Caves", "Deep Caves: Big Sis", 8680142, 352),
+        LocationData("Omega Nest", "Omega Nest: SA-X Queen Lucina", 8680143, 355),
+        LocationData("Omega Nest", "Omega Nest: Epsilon", 8680144, 354),
+        LocationData("Omega Nest", "Omega Nest: Druid", 8680145, 353),
     ]
-
-    if not world or is_option_enabled(world, player, "MetroidsAreChecks"):
-        location_table += (
-            #metroids
-            # todo remove or place locked items below when option not enabled
-            LocationData("First Alpha", "The Forgotten Alpha", 8680100),
-
-            LocationData("Golden Temple", "Golden Temple: Metroid above Spider Ball", 8680101, logic.AM2R_can_spider),
-            LocationData("Golden Temple Nest", "Golden Temple Nest: Moe", 8680102, logic.AM2R_can_bomb),  # Loj
-            LocationData("Golden Temple Nest", "Golden Temple Nest: Larry", 8680103, logic.AM2R_can_bomb),    # Loj
-            LocationData("Golden Temple Nest", "Golden Temple Nest: Curly", 8680104, logic.AM2R_can_bomb),    # Loj
-
-            LocationData("Main Caves", "Main Caves: Freddy Fazbear", 8680105),  # Epsilon
-            LocationData("Hydro Station", "Hydro Station: Turbine Terror", 8680106),  # Xander
-            LocationData("Hydro Station", "Hydro Station: The Lookout", 8680107, logic.AM2R_can_schmove),  # Xander
-            LocationData("Hydro Station", "Hydro Station: Recent Guardian", 8680108),  # ANX
-
-            LocationData("Hydro Nest", "Hydro Nest: Spiderman Decent", 8680109),
-            LocationData("Hydro Nest", "Hydro Nest: Carnage Awful", 8680110),
-            LocationData("Hydro Nest", "Hydro Nest: Venom Awesome", 8680111),
-            LocationData("Hydro Nest", "Hydro Nest: Something More Something Awesome", 8680112),
-
-            LocationData("Industrial Complex Nest", "Industrial Nest: Mimolette", 8680113, lambda state: state.has("Speed Booster", player) or state.has("Super Missile", player)),
-            LocationData("Industrial Complex Nest", "Industrial Nest: The Big Cheese", 8680114, lambda state: state.has("Speed Booster", player) or state.has("Super Missile", player)),
-            LocationData("Industrial Complex Nest", "Industrial Nest: Mohwir", 8680115, lambda state: logic.AM2R_can_bomb(state) and (state.has("Speed Booster", player) or state.has("Super Missile", player))),
-            LocationData("Industrial Complex Nest", "Industrial Nest: Chirn", 8680116, lambda state: logic.AM2R_can_bomb(state) and (state.has("Speed Booster", player) or state.has("Super Missile", player))),
-            LocationData("Industrial Complex Nest", "Industrial Nest: BHHarbinger", 8680117, lambda state: logic.AM2R_can_bomb(state) and (state.has("Speed Booster", player) or state.has("Super Missile", player))),
-            LocationData("Industrial Complex Nest", "Industrial Nest: The Abyssal Creature", 8680118, lambda state: logic.AM2R_can_bomb(state) and state.has("Spider Ball", player) and (state.has("Speed Booster", player) or state.has("Super Missile", player))),
-
-            LocationData("Pre Industrial Complex", "Industrial Complex: Sisyphus", 8680119, logic.AM2R_can_spider),  # Mimo
-            LocationData("Pre Industrial Complex", "Industrial Complex: And then there\'s this Asshole", 8680120, logic.AM2R_can_spider),  # ANX
-
-            LocationData("Industrial Complex", "Inside Industrial: Guardian of Doom Treadmill", 8680121, lambda state: state.has("Speed Booster", player) and logic.AM2R_can_bomb(state)),
-            LocationData("Industrial Complex", "Inside Industrial: Rawsome1234 by the Lava", 8680122, lambda state: state.has("Speed Booster", player) and logic.AM2R_can_bomb(state)),
-
-            LocationData("GFS Thoth", "Dual Alphas: Marco", 8680123),  # Epsilon
-            LocationData("GFS Thoth", "Dual Alphas: Polo", 8680124),  # Epsilon
-
-            LocationData("Mines", "Mines: Unga", 8680125, lambda state: state.has("Super Missile", player) and (state.has("Space Jump", player) or state.has("Spider Ball", player))),
-            LocationData("Mines", "Mines: Gunga", 8680126, lambda state: state.has("Super Missile", player) and (state.has("Space Jump", player) or state.has("Spider Ball", player))),
-
-            LocationData("The Tower", "The Tower: Patricia", 8680127, logic.AM2R_can_fly),  # Mahan
-            LocationData("The Tower", "The Tower: Variable \"GUH\"", 8680128, logic.AM2R_can_fly),  # ANX
-            LocationData("The Tower", "Ruler of The Tower: Slagathor", 8680129, logic.AM2R_can_schmove),  # Rawsome
-            LocationData("The Tower", "The Tower: Anakin", 8680130, logic.AM2R_can_bomb),  # Xander
-            LocationData("The Tower", "The Tower: Mr.Sandman", 8680131, logic.AM2R_can_fly),  # Xander
-            LocationData("The Tower", "The Tower: Xander", 8680132, lambda state: state.has("Space Jump", player)),
-
-            LocationData("EMP", "EMP: Sir Zeta Commander of the Alpha Squadron", 8680133, logic.AM2R_can_bomb),  # Lucina
-
-            LocationData("Pipe Hell R", "Alpha Squadron: Timmy", 8680134),  # Lucina
-            LocationData("Pipe Hell R", "Alpha Squadron: Tommy", 8680135),  # Lucina
-            LocationData("Pipe Hell R", "Alpha Squadron: Terry", 8680136),  # Lucina
-            LocationData("Pipe Hell R", "Alpha Squadron: Telly", 8680137),  # Lucina
-            LocationData("Pipe Hell R", "Alpha Squadron: Martin", 8680138),
-
-            LocationData("Underwater Distro Connection", "Underwater: Gamma Bros Mario", 8680139),  # Lucina
-            LocationData("Underwater Distro Connection", "Underwater: Gamma Bros Luigi", 8680140),  # Lucina
-
-            LocationData("Deep Caves", "Deep Caves: Little Bro", 8680141),
-            LocationData("Deep Caves", "Deep Caves: Big Sis", 8680142),
-            LocationData("Omega Nest", "Omega Nest: SA-X Queen Lucina", 8680143),
-            LocationData("Omega Nest", "Omega Nest: Epsilon", 8680144),
-            LocationData("Omega Nest", "Omega Nest: Druid", 8680145),
-        )
 
     return tuple(location_table)

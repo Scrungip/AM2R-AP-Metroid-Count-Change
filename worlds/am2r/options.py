@@ -1,33 +1,61 @@
 from typing import Union, List, Dict
 from BaseClasses import MultiWorld
-from Options import AssembleOptions, Choice, DeathLink, DefaultOnToggle, Range, StartInventoryPool
+from Options import AssembleOptions, Choice, DeathLink, DefaultOnToggle, Range, StartInventoryPool, Toggle
 
 
 class MetroidsRequired(Range):
     """Chose how many Metroids need to be killed or obtained to go through to the omega nest"""
     display_name = "Metroids Required for Omega Nest"
     range_start = 0
-    range_end = 41
-    default = 41
+    range_end = 46
+    default = 46
 
 
 class MetroidsAreChecks(Choice):
     """Have each of the 46 non lab Metroids be treated as locations"""
     display_name = "Metroids are Checks"
-    default = 0
+    default = 2
     option_disabled = 0
     option_exclude_A6 = 1
     option_include_A6 = 2
 
 
 class TrapFillPercentage(Range):
-    """Adds in Slightly inconvenient Traps into the item pool Equipment Traps disable 1 random item for up to 3 minutes
-    depending on the disabled item (more critical items will be disabled for less time).  Ice Traps seem rather
-    self-explanatory, but they will freeze you upon receiving them with a full fanfare and an actual player freeze"""
+    """Adds in slightly inconvenient traps into the item pool"""
     display_name = "Trap Fill Percentage"
     range_start = 0
     range_end = 100
     default = 0
+
+
+class RemoveFloodTrap(Toggle):
+    """Removes Flood Traps from trap fill"""
+    display_name = "Remove Flood Trap"
+
+
+class RemoveTossTrap(Toggle):
+    """There is a pipebomb in your mailbox"""
+    display_name = "Remove Toss Trap"
+
+
+class RemoveShortBeam(Toggle):
+    """Remove muscle memory trap"""
+    display_name = "Remove Short Beam"
+
+
+class RemoveEMPTrap(Toggle):
+    """Yes we know that it looks weird during the idle animation, but it's a vanilla bug"""
+    display_name = "Remove EMP Trap"
+
+
+class RemoveTouhouTrap(Toggle):
+    """Removes Touhou Traps from trap fill"""
+    display_name = "Remove Touhou Trap"
+
+
+class RemoveOHKOTrap(Toggle):
+    """Removes OHKO Traps from trap fill"""
+    display_name = "Remove OHKO Trap"
 
 
 #class ItemSprites(OptionList):
@@ -40,11 +68,6 @@ class TrapFillPercentage(Range):
 #    option_chiny = 2
 #    option_ungrouped = 3
 #    option_lies = 4
-
-
-#class Visuals(Toggle):
-#    """"""Re-colours all the visual elements with new fresh palettes.  Does not affect gameplay.
-#    Courtesy of Abyssal""""""
 
 
 #class StartingWeapons(Choice):
@@ -88,6 +111,12 @@ AM2R_options: Dict[str, AssembleOptions] = {
     "MetroidsRequired": MetroidsRequired,
     "MetroidsAreChecks": MetroidsAreChecks,
     "TrapFillPercentage": TrapFillPercentage,
+    "RemoveFloodTrap": RemoveFloodTrap,
+    "RemoveTossTrap": RemoveTossTrap,
+    "RemoveShortBeam": RemoveShortBeam,
+    "RemoveEMPTrap": RemoveEMPTrap,
+    "RemoveTouhouTrap": RemoveTouhouTrap,
+    "RemoveOHKOTrap": RemoveOHKOTrap,
     #  "Item Sprites": ItemSprites,
     #  "Starting Weapons": StartingWeapons,
     #  "Randomize Baby", RandomizeBaby

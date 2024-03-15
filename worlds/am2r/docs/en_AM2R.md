@@ -14,7 +14,10 @@ If you are playing this mod and are encountering bugs **DO NOT** report them to 
 Fuck you Abyss said it was possible, and I was there.
 
 ## Randomizer Information
+
 ### What is randomized?
 All items both majors and minors are randomized together in one pool with the option to add in the metroids as checks as well.
 ### What is the goal?
-The goal of this AM2R randomizer implementation is to collect kill or collect the self specified number of metroids to reach the deep caves and then a few more to get into the lab and fight the queen metroid.
+The goal of this AM2R randomizer implementation is to kill or collect the self specified number of metroids to reach the queen metroid and save the baby metorid
+### What do I get with 100% trap fill?
+With max trap fill you get 1 copy of every major as well as 2 PB packs and 1 Super Missile

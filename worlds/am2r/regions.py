@@ -96,6 +96,9 @@ def create_regions_and_locations(world: MultiWorld, player: int):
     connect(world, player, "Main Caves", "GFS Thoth"),
     connect(world, player, "GFS Thoth", "Main Caves"),
 
+    connect(world, player, "GFS Thoth", "Genesis")
+    connect(world, player, "GFS Thoth", "Genesis")
+
     connect(world, player, "Guardian", "Golden Temple"),
     connect(world, player, "Golden Temple", "Guardian"),
 

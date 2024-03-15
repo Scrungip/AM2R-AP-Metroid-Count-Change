@@ -11,7 +11,7 @@ class AM2RLogic:
         self.player = player
 
     def AM2R_can_bomb(self, state: CollectionState) -> bool:
-        return state.has_any({'Bombs', 'Power Bombs'}, self.player)
+        return state.has('Bombs', self.player) or state.has('Power Bomb', self.player, 2)
 
     def AM2R_can_jump(self, state: CollectionState) -> bool:
         return state.has_any({'Hi Jump', 'Space Jump', 'Bombs'}, self.player)
