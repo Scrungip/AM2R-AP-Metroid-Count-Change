@@ -224,7 +224,7 @@ def create_location_rules(world: "SnailiadWorld") -> None:
              lambda state: level_2_breakables(state, player, world))
 
     set_rule(multiworld.get_location("Percentage Snail\'s Hidey Hole", player),
-             lambda state: level_2_breakables(state, player, world))
+             lambda state: level_2_breakables(state, player, world) and ((is_blobby(options) and has_high_jump(state, player, world)) or not (is_blobby(options)))
 
     set_rule(multiworld.get_location("Digging Grounds", player),
              lambda state: True)
@@ -236,10 +236,11 @@ def create_location_rules(world: "SnailiadWorld") -> None:
              lambda state: level_2_breakables(state, player, world))
 
     set_rule(multiworld.get_location("Discombobulatory Alcove", player),
-             lambda state: has_secret_knowledge(options) or can_fly(state, player, world) or is_upside(options) or is_leggy(options))
+             lambda state: has_secret_knowledge(options) and ((is_blobby(options) and has_high_jump(state, player, world)) or not (is_blobby(options)))
+             or can_fly(state, player, world) or is_upside(options) or is_leggy(options))
 
     set_rule(multiworld.get_location("Seabed Caves", player),
-             lambda state: True)
+             lambda state: not (is_blobby(options)) or (is_blobby(options) and has_high_jump(state, player, world)))
 
     set_rule(multiworld.get_location("Fine Dining (Peashooter)", player),
              lambda state: True)
@@ -275,8 +276,9 @@ def create_location_rules(world: "SnailiadWorld") -> None:
              lambda state: level_2_breakables(state, player, world))
 
     set_rule(multiworld.get_location("Sweater Required", player),
-             lambda state: level_1_breakables(state, player, world) and (has_ice_shell(state, player, world)
-             or (has_health(state, player) and (can_fly(state, player, world) or is_leggy(options)))))
+             lambda state: (has_ice_shell(state, player, world) or (has_health(state, player) and (can_fly(state, player, world)
+             or is_leggy(options)))) and level_1_breakables(state, player, world) and (is_blobby(options) and has_high_jump(state, player, world))
+             or not (is_blobby(options)))
 
     set_rule(multiworld.get_location("A Secret to Snowbody", player),
              lambda state: pink_door(state, player, world))
