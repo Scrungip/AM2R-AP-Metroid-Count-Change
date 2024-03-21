@@ -61,11 +61,11 @@ def has_ammo(state: CollectionState, player: int, options: AM2ROptions, health: 
             s_packs = 0
 
     if options.ammo_logic == 0:
-        m_count = 5 * m_packs  # 5 missiles per pack
-        s_count = 2 * s_packs  # 2 supers per pack
+        m_count += 5 * m_packs  # 5 missiles per pack
+        s_count += 2 * s_packs  # 2 supers per pack
     else:
-        m_count = 2 * m_packs  # 2 missiles per pack
-        s_count = 1 * s_packs  # 1 super per pack
+        m_count += 2 * m_packs  # 2 missiles per pack
+        s_count += 1 * s_packs  # 1 super per pack
 
     damage = m_count + (s_count * 5)  # supers are worth 5 missiles of damage
 
