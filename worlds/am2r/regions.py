@@ -1,6 +1,6 @@
 from typing import List, Set, Dict, Tuple, Optional, Callable, NamedTuple
 from BaseClasses import CollectionState, MultiWorld, Region, Entrance, Location
-from .locations import LocationData, get_location_datas
+from .locations import AM2RLocationData, get_location_datas
 from .rules import AM2RLogic
 
 EventId: Optional[int] = None
@@ -14,9 +14,9 @@ class LocationData(NamedTuple):
 
 
 def create_regions_and_locations(world: MultiWorld, player: int):
-    location_datas: Tuple[LocationData] = get_location_datas(world, player)
+    location_datas: Tuple[AM2RLocationData] = get_location_datas(world, player)
 
-    locations_per_region: Dict[str, List[LocationData]] = split_location_datas_per_region(location_datas)
+    locations_per_region: Dict[str, List[AM2RLocationData]] = split_location_datas_per_region(location_datas)
 
     regions = [
         create_region(world, player, locations_per_region, "Menu"),
@@ -259,7 +259,7 @@ def connect(world: MultiWorld, player: int, source: str, target: str,
 
 
 def split_location_datas_per_region(locations: Tuple[LocationData, ...]) -> Dict[str, List[LocationData]]:
-    per_region: Dict[str, List[LocationData]] = {}
+    per_region: Dict[str, List[AM2RLocationData]] = {}
 
     for location in locations:
         per_region.setdefault(location.region, []).append(location)
