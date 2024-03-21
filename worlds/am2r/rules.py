@@ -4,50 +4,92 @@ from typing import Dict, TYPE_CHECKING
 from worlds.generic.Rules import set_rule, forbid_item
 from BaseClasses import CollectionState
 from .options import AM2ROptions
+from math import ceil
 
 if TYPE_CHECKING:
     from . import AM2RWorld
 
 
 # use only to make breakables, red door and missile block checks easier
-def has_missiles(state: CollectionState, player: int, options: AM2ROptions) -> bool:
+def has_missiles(state: CollectionState, player: int, options: AM2ROptions, packs: int) -> bool:
+    if options.ammo_logic == 1:
+        packs = ceil(packs * 2.5)  # on hard/fusion mode, missile packs give 2 missiles instead of 5 this value is rounded up
+
     if options.missile_launcher == 0:
         return True
     elif options.missile_launcher == 1:
-        return state.has("Missile", player) or has_supers(state, player, options, 2)
+        return state.has("Missile", player, packs)
     elif options.missile_launcher == 2:
-        return state.has("Missile Launcher", player) or has_supers(state, player, options, 2)
+        packs -= 1  # launcher counts as 1 pack
+        return state.has("Missile Launcher", player) and state.has("Missile", player, packs)
 
 
 # for super blocks and Metroid logic
-def has_supers(state: CollectionState, player: int, options: AM2ROptions, required: int) -> bool:
-    num = required
+def has_supers(state: CollectionState, player: int, options: AM2ROptions, packs: int) -> bool:
     if options.ammo_logic == 1:
-        num *= 2
+        packs *= 2  # on hard/fusion mode, super missile packs give 1 super missile instead of 2
 
     if options.missile_launcher:
-        num -= 1
-        return state.has("Super Missile Launcher", player) and state.has("Super Missile", player, num)
+        packs -= 1  # launcher counts as 1 pack
+        return state.has("Super Missile Launcher", player) and state.has("Super Missile", player, packs)
     else:
-        return state.has("Super Missile", player, num)
+        return state.has("Super Missile", player, packs)
 
 
-def has_powerbombs(state: CollectionState, player: int, options: AM2ROptions, required: int) -> bool:
-    num = required
+def has_ammo(state: CollectionState, player: int, options: AM2ROptions, health: int) -> bool:
+    #  calculate by number of missiles NOT MISSILE PACKS required to kill a metroid
+    m_packs = state.count("Missile", player)
+    s_packs = state.count("Super Missile", player)
+    m_count = 0
+    s_count = 0
+    damage = 0
+    health = health + 0
+
+    if options.missile_launcher == 0:  # default starting 30 missiles
+        m_count += 30
+
+    if options.missile_launcher == 2:  # missile launcher in item pool counts as 30 missiles
+        if state.has("Missile Launcher", player):
+            m_count += 30
+        else:  # if no launcher, then you cant fire missiles and they should not be counted towards damage total
+            m_packs = 0
+
+    if options.super_launcher:
+        if state.has("Super Missile Launcher", player):  # Super Launcher counts as 1 pack
+            s_packs += 1
+        else:  # if no launcher, then you cant fire missiles and they should not be counted towards damage total
+            s_packs = 0
+
+    if options.ammo_logic == 0:
+        m_count = 5 * m_packs  # 5 missiles per pack
+        s_count = 2 * s_packs  # 2 supers per pack
+    else:
+        m_count = 2 * m_packs  # 2 missiles per pack
+        s_count = 1 * s_packs  # 1 super per pack
+
+    damage = m_count + (s_count * 5)  # supers are worth 5 missiles of damage
+
+    if damage >= health:
+        return True
+    else:
+        return False
+
+
+def has_powerbombs(state: CollectionState, player: int, options: AM2ROptions, packs: int) -> bool:
     if options.ammo_logic == 1:
-        num *= 2
+        packs *= 2
 
     if options.missile_launcher:
-        num -= 1
-        return state.has("Power Bomb Launcher", player) and state.has("Power Bomb", player, num)
+        packs -= 1  # launcher counts as 1 pack
+        return state.has("Power Bomb Launcher", player) and state.has("Power Bomb", player, packs)
     else:
-        return state.has("Power Bomb", player, num)
+        return state.has("Power Bomb", player, packs)
 
 
 def can_break_blocks(state: CollectionState, player: int, options: AM2ROptions) -> bool:
     if options.remove_beam:
         return (state.has("Screw Attack", player) or
-                can_bomb(state, player, options, 2) or has_missiles(state, player, options))
+                can_bomb(state, player, options, 2) or has_missiles(state, player, options, 2))
     else:
         return True
 
@@ -124,6 +166,8 @@ def set_region_rules(world: AM2RWorld) -> None:
     multiworld = world.multiworld
     player = world.player
     options = world.options
+
+
 
 
 def set_location_rules_easy(world: AM2RWorld) -> None:  # currently every location is in a reachable state

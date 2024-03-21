@@ -18,13 +18,15 @@ class LogicDificulty(Choice):
 
 
 class AmmoLogic(Choice):
-    """Normal: Assumes you get 5 missiles and 2 Super Missiles/Power Bombs per pack
-    Fusion: Assumes you get 2 missiles and 1 Super Missile/Power Bomb per pack
-    picking normal and then playing on fusion or hard difficulty could make the game impossible"""
+    """Normal/Easy: Assumes you get 5 missiles and 2 Super Missiles/Power Bombs per pack
+    Fusion/Hard: Assumes you get 2 missiles and 1 Super Missile/Power Bomb per pack
+    picking normal/easy and then playing on fusion or hard difficulty could make the game impossible"""
     display_name = "Ammo Logic"
     default = 0
     option_normal = 0
     option_fusion = 1
+    ailias_hard = 1
+    alias_easy = 0
 
 
 class MetroidsRequired(Range):
@@ -146,8 +148,8 @@ class AM2ROptions(PerGameCommonOptions):
     remove_morph_ball: RemoveMorphBall
     remove_beam: RemoveBeam
     missile_launcher: MissileLauncher
-    super_launcer: SuperLauncher
-    power_launcer: PowerLauncher
+    super_launcher: SuperLauncher
+    power_launcher: PowerLauncher
     trap_fill_percentage: TrapFillPercentage
     remove_flood_trap: RemoveFloodTrap
     remove_toss_trap: RemoveTossTrap
