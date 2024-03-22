@@ -122,9 +122,9 @@ def can_morph_uppies(state: CollectionState, player: int, options: AM2ROptions) 
          or state.has("Spring Ball", player))
 
 
-def can_bomb(state: CollectionState, player: int, options: AM2ROptions, required: int) -> bool:
+def can_bomb(state: CollectionState, player: int, options: AM2ROptions, packs: int) -> bool:
     return (can_morph(state, player, options) and
-            (state.has("Bombs", player) or has_powerbombs(state, player, options, required)))
+            (state.has("Bombs", player) or has_powerbombs(state, player, options, packs)))
 
 
 def can_ibj(state: CollectionState, player: int, options: AM2ROptions) -> bool:
@@ -138,7 +138,7 @@ def can_fly(state: CollectionState, player: int, options: AM2ROptions) -> bool:
     return state.has("Space Jump", player) or can_ibj(state, player, options)
 
 
-def can_hi_jump(state: CollectionState, player: int, options: AM2ROptions) -> bool:
+def can_hi(state: CollectionState, player: int, options: AM2ROptions) -> bool:
     return state.has("Hi Jump", player) or can_fly(state, player, options)
 
 
