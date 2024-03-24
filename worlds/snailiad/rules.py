@@ -306,7 +306,7 @@ def create_location_rules(world: "SnailiadWorld") -> None:
     set_rule(multiworld.get_location("Prismatic Prize (Rainbow Wave)", player),
              lambda state: boss_2(options, state, player) or red_door(state, player, world))
 
-    set_rule(multiworld.get_location("Hall of Fire", player),  # todo how much health?
+    set_rule(multiworld.get_location("Hall of Fire", player),
              lambda state: (has_metal_shell(state, player, world) or has_health(state, player))
              and (pink_door(state, player, world) or red_door(state, player, world)))
 
