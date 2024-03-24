@@ -294,7 +294,8 @@ def create_location_rules(world: "SnailiadWorld") -> None:
              lambda state: level_2_breakables(state, player, world))
 
     set_rule(multiworld.get_location("The Labyrinth (High Jump)", player),
-             lambda state: level_2_breakables(state, player, world) or has_secret_knowledge(options))
+             lambda state: (has_secret_knowledge(options) and not is_upside(options))
+                           or level_2_breakables(state, player, world))
 
     set_rule(multiworld.get_location("Sneaky, Sneaky", player),
              lambda state: red_door(state, player, world))
